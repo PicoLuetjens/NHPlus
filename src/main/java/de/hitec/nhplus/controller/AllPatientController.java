@@ -47,9 +47,6 @@ public class AllPatientController {
     private TableColumn<Patient, String> columnRoomNumber;
 
     @FXML
-    private TableColumn<Patient, String> columnAssets;
-
-    @FXML
     private Button buttonDelete;
 
     @FXML
@@ -102,9 +99,6 @@ public class AllPatientController {
 
         this.columnRoomNumber.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
         this.columnRoomNumber.setCellFactory(TextFieldTableCell.forTableColumn());
-
-        this.columnAssets.setCellValueFactory(new PropertyValueFactory<>("assets"));
-        this.columnAssets.setCellFactory(TextFieldTableCell.forTableColumn());
 
         //Anzeigen der Daten
         this.tableView.setItems(this.patients);
@@ -184,17 +178,6 @@ public class AllPatientController {
     }
 
     /**
-     * When a cell of the column with assets was changed, this method will be called, to persist the change.
-     *
-     * @param event Event including the changed object and the change.
-     */
-    @FXML
-    public void handleOnEditAssets(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setAssets(event.getNewValue());
-        this.doUpdate(event);
-    }
-
-    /**
      * Updates a patient by calling the method <code>update()</code> of {@link PatientDao}.
      *
      * @param event Event including the changed object and the change.
@@ -252,9 +235,8 @@ public class AllPatientController {
         LocalDate date = DateConverter.convertStringToLocalDate(birthday);
         String careLevel = this.textFieldCareLevel.getText();
         String roomNumber = this.textFieldRoomNumber.getText();
-        String assets = this.textFieldAssets.getText();
         try {
-            this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber, assets));
+            this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
