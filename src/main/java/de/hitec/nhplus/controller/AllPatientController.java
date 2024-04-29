@@ -67,9 +67,6 @@ public class AllPatientController {
     @FXML
     private TextField textFieldRoomNumber;
 
-    @FXML
-    private TextField textFieldAssets;
-
     private final ObservableList<Patient> patients = FXCollections.observableArrayList();
     private PatientDao dao;
 
@@ -119,7 +116,6 @@ public class AllPatientController {
         this.textFieldDateOfBirth.textProperty().addListener(inputNewPatientListener);
         this.textFieldCareLevel.textProperty().addListener(inputNewPatientListener);
         this.textFieldRoomNumber.textProperty().addListener(inputNewPatientListener);
-        this.textFieldAssets.textProperty().addListener(inputNewPatientListener);
     }
 
     /**
@@ -253,7 +249,6 @@ public class AllPatientController {
         this.textFieldDateOfBirth.clear();
         this.textFieldCareLevel.clear();
         this.textFieldRoomNumber.clear();
-        this.textFieldAssets.clear();
     }
 
     private boolean areInputDataValid() {
@@ -267,6 +262,6 @@ public class AllPatientController {
 
         return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() &&
                 !this.textFieldDateOfBirth.getText().isBlank() && !this.textFieldCareLevel.getText().isBlank() &&
-                !this.textFieldRoomNumber.getText().isBlank() && !this.textFieldAssets.getText().isBlank();
+                !this.textFieldRoomNumber.getText().isBlank();
     }
 }
