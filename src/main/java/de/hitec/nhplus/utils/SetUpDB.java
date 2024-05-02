@@ -86,7 +86,7 @@ public class SetUpDB {
 
 
     private static void setUpTableNurse(Connection connection) {
-        final String SQL = "CREATE TABLE IF NOT EXISTS patient (" +
+        final String SQL = "CREATE TABLE IF NOT EXISTS nurse (" +
                 "   nid INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "   firstname TEXT NOT NULL, " +
                 "   surname TEXT NOT NULL, " +
@@ -136,7 +136,13 @@ public class SetUpDB {
     private static void setUpNurses() {
         try {
             NurseDao dao = DaoFactory.getDaoFactory().createNurseDAO();
-            dao.create(new Nurse(1, "Svetlana", "Nowak", "4", "FALSE"));
+            dao.create(new Nurse(1, "Svetlana", "Nowak", "0421 1234567", "false"));
+            dao.create(new Nurse(1, "Jan", "Kowalski", "0421 7654321", "false"));
+            dao.create(new Nurse(1, "Tomas", "Zielinski", "0421 2345678", "false"));
+            dao.create(new Nurse(1, "Klaus", "Wagner", "0421 8765432", "false"));
+            dao.create(new Nurse(1, "Peter", "Schmidt", "0421 3456789", "false"));
+            dao.create(new Nurse(1, "Lena", "Scheider", "0421 9876543", "false"));
+
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
