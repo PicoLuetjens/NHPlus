@@ -1,7 +1,5 @@
 package de.hitec.nhplus.datastorage;
 
-import de.hitec.nhplus.model.Patient;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,15 +47,11 @@ public abstract class DaoImp<T> implements Dao<T> {
 
     protected abstract PreparedStatement getCreateStatement(T t);
 
-    protected abstract PreparedStatement getCreateStatement(Patient patient);
-
     protected abstract PreparedStatement getReadByIDStatement(long key);
 
     protected abstract PreparedStatement getReadAllStatement();
 
     protected abstract PreparedStatement getUpdateStatement(T t);
-
-    protected abstract PreparedStatement getUpdateStatement(Patient patient);
 
     protected abstract PreparedStatement getDeleteStatement(long key);
 }
