@@ -90,7 +90,7 @@ public class SetUpDB {
                 "   nid INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "   firstname TEXT NOT NULL, " +
                 "   surname TEXT NOT NULL, " +
-                "   phonenumber TEXT NOT NULL " +
+                "   phonenumber TEXT NOT NULL, " +
                 "   IS_LOCKED TEXT NOT NULL " +
                 ");";
 

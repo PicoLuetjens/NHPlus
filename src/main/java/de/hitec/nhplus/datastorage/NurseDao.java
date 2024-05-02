@@ -1,11 +1,8 @@
 package de.hitec.nhplus.datastorage;
 
 import de.hitec.nhplus.model.Nurse;
-import de.hitec.nhplus.model.Patient;
-import de.hitec.nhplus.utils.DateConverter;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +12,7 @@ import java.util.ArrayList;
 public class NurseDao extends DaoImp<Nurse> {
 
     /**
-     * The constructor initiates an object of <code>PatientDao</code> and passes the connection to its super class.
+     * The constructor initiates an object of <code>NurseDao</code> and passes the connection to its super class.
      *
      * @param connection Object of <code>Connection</code> to execute the SQL-statements.
      */
@@ -24,9 +21,9 @@ public class NurseDao extends DaoImp<Nurse> {
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to persist the given object of <code>Patient</code>.
+     * Generates a <code>PreparedStatement</code> to persist the given object of <code>Nurse</code>.
      *
-     * @param patient Object of <code>Patient</code> to persist.
+     * @param nurse Object of <code>Nurse</code> to persist.
      * @return <code>PreparedStatement</code> to insert the given patient.
      */
     @Override
@@ -49,8 +46,8 @@ public class NurseDao extends DaoImp<Nurse> {
     /**
      * Generates a <code>PreparedStatement</code> to query a patient by a given patient id (pid).
      *
-     * @param pid Patient id to query.
-     * @return <code>PreparedStatement</code> to query the patient.
+     * @param nid Nurse id to query.
+     * @return <code>PreparedStatement</code> to query the nurse.
      */
     @Override
     protected PreparedStatement getReadByIDStatement(long nid) {
@@ -77,19 +74,20 @@ public class NurseDao extends DaoImp<Nurse> {
                 result.getInt(1),
                 result.getString(2),
                 result.getString(3),
-                result.getString(4));
+                result.getString(4),
+                result.getString(5));
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to query all patients.
+     * Generates a <code>PreparedStatement</code> to query all nurses.
      *
-     * @return <code>PreparedStatement</code> to query all patients.
+     * @return <code>PreparedStatement</code> to query all nurses.
      */
     @Override
     protected PreparedStatement getReadAllStatement() {
         PreparedStatement statement = null;
         try {
-            final String SQL = "SELECT * FROM patient";
+            final String SQL = "SELECT * FROM nurse";
             statement = this.connection.prepareStatement(SQL);
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -98,51 +96,49 @@ public class NurseDao extends DaoImp<Nurse> {
     }
 
     /**
-     * Maps a <code>ResultSet</code> of all patients to an <code>ArrayList</code> of <code>Patient</code> objects.
+     * Maps a <code>ResultSet</code> of all nurses to an <code>ArrayList</code> of <code>Nurse</code> objects.
      *
-     * @param result ResultSet with all rows. The Columns will be mapped to objects of class <code>Patient</code>.
-     * @return <code>ArrayList</code> with objects of class <code>Patient</code> of all rows in the
+     * @param result ResultSet with all rows. The Columns will be mapped to objects of class <code>Nurse</code>.
+     * @return <code>ArrayList</code> with objects of class <code>Nurse</code> of all rows in the
      * <code>ResultSet</code>.
      */
     @Override
-    protected ArrayList<Patient> getListFromResultSet(ResultSet result) throws SQLException {
-        ArrayList<Patient> list = new ArrayList<>();
+    protected ArrayList<Nurse> getListFromResultSet(ResultSet result) throws SQLException {
+        ArrayList<Nurse> list = new ArrayList<>();
         while (result.next()) {
-            LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
-            Patient patient = new Patient(result.getInt(1), result.getString(2),
-                    result.getString(3), date,
-                    result.getString(5), result.getString(6));
-            list.add(patient);
+
+            Nurse nurse = new Nurse(result.getInt(1), result.getString(2),
+                    result.getString(3),
+                    result.getString(4), result.getString(5));
+            list.add(nurse);
         }
         return list;
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to update the given patient, identified
-     * by the id of the patient (pid).
+     * Generates a <code>PreparedStatement</code> to update the given nurse, identified
+     * by the id of the nurse (nid).
      *
-     * @param patient Patient object to update.
-     * @return <code>PreparedStatement</code> to update the given patient.
+     * @param nurse Nurse object to update.
+     * @return <code>PreparedStatement</code> to update the given nurse.
      */
     @Override
-    protected PreparedStatement getUpdateStatement(Patient patient) {
+    protected PreparedStatement getUpdateStatement(Nurse nurse) {
         PreparedStatement preparedStatement = null;
         try {
             final String SQL =
-                    "UPDATE patient SET " +
+                    "UPDATE nurse SET " +
                             "firstname = ?, " +
                             "surname = ?, " +
-                            "dateOfBirth = ?, " +
-                            "carelevel = ?, " +
-                            "roomnumber = ? " +
-                            "WHERE pid = ?";
+                            "IS_LOCKED = ?, " +
+                            "phonenumber = ? " +
+                            "WHERE nid = ?";
             preparedStatement = this.connection.prepareStatement(SQL);
-            preparedStatement.setString(1, patient.getFirstName());
-            preparedStatement.setString(2, patient.getSurname());
-            preparedStatement.setString(3, patient.getDateOfBirth());
-            preparedStatement.setString(4, patient.getCareLevel());
-            preparedStatement.setString(5, patient.getRoomNumber());
-            preparedStatement.setLong(6, patient.getPid());
+            preparedStatement.setString(1, nurse.getFirstName());
+            preparedStatement.setString(2, nurse.getSurname());
+            preparedStatement.setString(3, nurse.isLocked());
+            preparedStatement.setString(4, nurse.getPhoneNumber());
+            preparedStatement.setLong(5, nurse.getNid());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -150,18 +146,18 @@ public class NurseDao extends DaoImp<Nurse> {
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to delete a patient with the given id.
+     * Generates a <code>PreparedStatement</code> to delete a nurse with the given id.
      *
-     * @param pid Id of the patient to delete.
-     * @return <code>PreparedStatement</code> to delete patient with the given id.
+     * @param nid Id of the nurse to delete.
+     * @return <code>PreparedStatement</code> to delete nurse with the given id.
      */
     @Override
-    protected PreparedStatement getDeleteStatement(long pid) {
+    protected PreparedStatement getDeleteStatement(long nid) {
         PreparedStatement preparedStatement = null;
         try {
-            final String SQL = "DELETE FROM patient WHERE pid = ?";
+            final String SQL = "DELETE FROM nurse WHERE nid = ?";
             preparedStatement = this.connection.prepareStatement(SQL);
-            preparedStatement.setLong(1, pid);
+            preparedStatement.setLong(1, nid);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
