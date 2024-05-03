@@ -1,13 +1,12 @@
 package de.hitec.nhplus.model;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Nurse extends Person{
     private SimpleLongProperty nid;
     private final SimpleStringProperty phoneNumber;
-    private final SimpleBooleanProperty locked;
+    private final SimpleStringProperty locked;
 
     /**
      * Constructor to initiate an object of class <code>Nurse</code> with the given parameter. Use this constructor
@@ -19,10 +18,10 @@ public class Nurse extends Person{
      * @param locked lock status of the nurse.
      */
 
-    public Nurse(String firstName, String surname, String phoneNumber, boolean locked) {
+    public Nurse(String firstName, String surname, String phoneNumber, String locked) {
         super(firstName, surname);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
-        this.locked = new SimpleBooleanProperty(locked);
+        this.locked = new SimpleStringProperty(locked);
     }
 
     /**
@@ -36,11 +35,11 @@ public class Nurse extends Person{
      * @param locked lock status of the nurse.
      */
 
-    public Nurse(long nid, String firstName, String surname, String phoneNumber, boolean locked) {
+    public Nurse(long nid, String firstName, String surname, String phoneNumber, String locked) {
         super(firstName, surname);
         this.nid = new SimpleLongProperty(nid);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
-        this.locked = new SimpleBooleanProperty(locked);
+        this.locked = new SimpleStringProperty(locked);
     }
 
     public long getNid() {
@@ -63,9 +62,9 @@ public class Nurse extends Person{
         this.phoneNumber.set(phoneNumber);
     }
 
-    public boolean isLocked() {return locked.get();}
+    public String isLocked() {return locked.get();}
 
-    public SimpleBooleanProperty lockedProperty() {return locked;}
+    public SimpleStringProperty lockedProperty() {return locked;}
 
-    public void setLocked(boolean locked) {this.locked.set(locked);}
+    public void setLocked(String locked) {this.locked.set(locked);}
 }
