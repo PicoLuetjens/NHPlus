@@ -11,11 +11,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LoginForm extends Application {
-	private Stage loginStage;
+	private static Stage loginStage;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		this.loginStage = primaryStage;
+		loginStage = primaryStage;
 		loginWindow(primaryStage);
 	}
 
@@ -25,13 +25,16 @@ public class LoginForm extends Application {
 			FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/LoginFormView.fxml"));
 			StackPane pane = loader.load();
 			Scene scene = new Scene(pane);
-			this.loginStage.setTitle("Login");
-			this.loginStage.setScene(scene);
-			this.loginStage.setResizable(false);
-			this.loginStage.show();
+			loginStage.setTitle("Login");
+			loginStage.setScene(scene);
+			loginStage.setResizable(false);
+			loginStage.show();
 			control.clickButton();
 		} catch (IOException exception) {
 			exception.printStackTrace();
 		}
+	}
+	public static void closeStage() {
+		loginStage.close();
 	}
 }
