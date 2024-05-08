@@ -1,45 +1,37 @@
-package de.hitec.nhplus.login;
+package de.hitec.nhplus.application;
 
-import javafx.application.Preloader;
+import de.hitec.nhplus.Main;
+import de.hitec.nhplus.controller.LoginFormController;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class LoginForm extends Preloader {
-	private Stage preloaderStage;
+import java.io.IOException;
 
-	private static final String CORRECT_USERNAME = "admin";
-	private static final String CORRECT_PASSWORD = "admin123";
+public class LoginForm extends Application {
+	private Stage loginStage;
 
-	public void start(Stage primaryStage) {
-		primaryStage.setTitle("Login Form");
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		this.loginStage = primaryStage;
+		loginWindow(primaryStage);
+	}
 
-		Label usernameLabel = new Label("Username:");
-		Label passwordLabel = new Label("Password:");
-		TextField usernameField = new TextField();
-		PasswordField passwordField = new PasswordField();
-		Label resultLabel = new Label();
-		Button loginButton = new Button("Login");
-
-		loginButton.setOnAction(event -> {
-			String enteredUsername = usernameField.getText();
-			String enteredPassword = passwordField.getText();
-			if (enteredUsername.equals(CORRECT_USERNAME) && enteredPassword.equals(CORRECT_PASSWORD)) {
-				resultLabel.setText("Login erfolgreich");
-			} else {
-				resultLabel.setText("Benutzer oder Password inkorrekt!");
-			}
-		});
-
-		VBox root = new VBox(10);
-		root.getChildren().addAll(usernameLabel, usernameField, passwordLabel, passwordField, loginButton, resultLabel);
-		Scene scene = new Scene(root, 300, 200);
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("NHPlus login");
-		primaryStage.show();
+	public void loginWindow(Stage primaryStage) {
+		try {
+			LoginFormController control = new LoginFormController();
+			FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/LoginFormView.fxml"));
+			StackPane pane = loader.load();
+			Scene scene = new Scene(pane);
+			this.loginStage.setTitle("Login");
+			this.loginStage.setScene(scene);
+			this.loginStage.setResizable(false);
+			this.loginStage.show();
+			control.clickButton();
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
 	}
 }
