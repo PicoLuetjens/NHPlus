@@ -5,6 +5,6 @@ Software Weiterentwicklung von NHPlus
 
 ###### Testing:
 ```text 
-***Username:*** test
-***Password:*** pass123
+Username: test
+Password: pass123
 ```
