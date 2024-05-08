@@ -28,7 +28,6 @@ public class LoginFormController {
 
 	public void clickButton() {
 
-		System.out.println("foo");
 		ActionEvent event = new ActionEvent();
 		Button loginButton = new Button();
 		loginButton.setOnAction(e -> {
@@ -40,7 +39,6 @@ public class LoginFormController {
 
 		String enteredUsername = user.getText();
 		String enteredPassword = password.getText();
-		System.out.println("step 1");
 		if (enteredUsername.equals(CORRECT_USERNAME) && enteredPassword.equals(CORRECT_PASSWORD)) {
 			responseLabel.setText("Login successful!");
 			Stage stage = new Stage();
@@ -48,7 +46,6 @@ public class LoginFormController {
 			window.start(stage);
 		} else {
 			responseLabel.setText("Login Failed");
-			System.out.println("foo2");
 		}
 	}
 }
