@@ -1,6 +1,8 @@
 package de.hitec.nhplus.controller;
 
+import de.hitec.nhplus.application.LoginForm;
 import de.hitec.nhplus.application.MainWindow;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,7 +29,6 @@ public class LoginFormController {
 	}
 
 	public void clickButton() {
-
 		ActionEvent event = new ActionEvent();
 		Button loginButton = new Button();
 		loginButton.setOnAction(e -> {
@@ -43,6 +44,7 @@ public class LoginFormController {
 			responseLabel.setText("Login successful!");
 			Stage stage = new Stage();
 			MainWindow window = new MainWindow();
+			LoginForm.closeStage();
 			window.start(stage);
 		} else {
 			responseLabel.setText("Login Failed");
