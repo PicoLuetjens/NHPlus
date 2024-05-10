@@ -1,7 +1,9 @@
 package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
+import de.hitec.nhplus.datastorage.NurseDao;
 import de.hitec.nhplus.datastorage.PatientDao;
+import de.hitec.nhplus.model.Nurse;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -21,30 +23,30 @@ import java.time.LocalDate;
 
 
 /**
- * The <code>AllPatientController</code> contains the entire logic of the patient view. It determines which data is displayed and how to react to events.
+ * The <code>AllCaregiverController</code> contains the entire logic of the nurse view. It determines which data is displayed and how to react to events.
  */
 public class AllCaregiverController {
 
     @FXML
-    private TableView<Patient> tableView;
+    private TableView<Nurse> tableView;
 
     @FXML
-    private TableColumn<Patient, Integer> columnId;
+    private TableColumn<Nurse, Integer> columnId;
 
     @FXML
-    private TableColumn<Patient, String> columnFirstName;
+    private TableColumn<Nurse, String> columnFirstName;
 
     @FXML
-    private TableColumn<Patient, String> columnSurname;
+    private TableColumn<Nurse, String> columnSurname;
 
     @FXML
-    private TableColumn<Patient, String> columnDateOfBirth;
+    private TableColumn<Nurse, String> columnDateOfBirth;
 
     @FXML
-    private TableColumn<Patient, String> columnCareLevel;
+    private TableColumn<Nurse, String> columnCareLevel;
 
     @FXML
-    private TableColumn<Patient, String> columnRoomNumber;
+    private TableColumn<Nurse, String> columnRoomNumber;
 
     @FXML
     private Button buttonDelete;
@@ -67,8 +69,8 @@ public class AllCaregiverController {
     @FXML
     private TextField textFieldRoomNumber;
 
-    private final ObservableList<Patient> patients = FXCollections.observableArrayList();
-    private PatientDao dao;
+    private final ObservableList<Nurse> nurses = FXCollections.observableArrayList();
+    private NurseDao dao;
 
     /**
      * When <code>initialize()</code> gets called, all fields are already initialized. For example from the FXMLLoader
@@ -78,7 +80,7 @@ public class AllCaregiverController {
     public void initialize() {
         this.readAllAndShowInTableView();
 
-        this.columnId.setCellValueFactory(new PropertyValueFactory<>("pid"));
+        this.columnId.setCellValueFactory(new PropertyValueFactory<>("nid"));
 
         // CellValueFactory to show property values in TableView
         this.columnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -98,24 +100,24 @@ public class AllCaregiverController {
         this.columnRoomNumber.setCellFactory(TextFieldTableCell.forTableColumn());
 
         //Anzeigen der Daten
-        this.tableView.setItems(this.patients);
+        this.tableView.setItems(this.nurses);
 
         this.buttonDelete.setDisable(true);
-        this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Patient>() {
+        this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Nurse>() {
             @Override
-            public void changed(ObservableValue<? extends Patient> observableValue, Patient oldPatient, Patient newPatient) {;
-                AllPatientController.this.buttonDelete.setDisable(newPatient == null);
+            public void changed(ObservableValue<? extends Nurse> observableValue, Nurse oldNurse, Nurse newNurse) {;
+                AllCaregiverController.this.buttonDelete.setDisable(newNurse == null);
             }
         });
 
         this.buttonAdd.setDisable(true);
-        ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) ->
-                AllPatientController.this.buttonAdd.setDisable(!AllPatientController.this.areInputDataValid());
-        this.textFieldSurname.textProperty().addListener(inputNewPatientListener);
-        this.textFieldFirstName.textProperty().addListener(inputNewPatientListener);
-        this.textFieldDateOfBirth.textProperty().addListener(inputNewPatientListener);
-        this.textFieldCareLevel.textProperty().addListener(inputNewPatientListener);
-        this.textFieldRoomNumber.textProperty().addListener(inputNewPatientListener);
+        ChangeListener<String> inputNewNurseListener = (observableValue, oldText, newText) ->
+                AllCaregiverController.this.buttonAdd.setDisable(!AllCaregiverController.this.areInputDataValid());
+        this.textFieldSurname.textProperty().addListener(inputNewNurseListener);
+        this.textFieldFirstName.textProperty().addListener(inputNewNurseListener);
+        this.textFieldDateOfBirth.textProperty().addListener(inputNewNurseListener);
+        this.textFieldCareLevel.textProperty().addListener(inputNewNurseListener);
+        this.textFieldRoomNumber.textProperty().addListener(inputNewNurseListener);
     }
 
     /**
@@ -124,7 +126,7 @@ public class AllCaregiverController {
      * @param event Event including the changed object and the change.
      */
     @FXML
-    public void handleOnEditFirstname(TableColumn.CellEditEvent<Patient, String> event) {
+    public void handleOnEditFirstname(TableColumn.CellEditEvent<Nurse, String> event) {
         event.getRowValue().setFirstName(event.getNewValue());
         this.doUpdate(event);
     }
@@ -135,7 +137,7 @@ public class AllCaregiverController {
      * @param event Event including the changed object and the change.
      */
     @FXML
-    public void handleOnEditSurname(TableColumn.CellEditEvent<Patient, String> event) {
+    public void handleOnEditSurname(TableColumn.CellEditEvent<Nurse, String> event) {
         event.getRowValue().setSurname(event.getNewValue());
         this.doUpdate(event);
     }
@@ -146,7 +148,7 @@ public class AllCaregiverController {
      * @param event Event including the changed object and the change.
      */
     @FXML
-    public void handleOnEditDateOfBirth(TableColumn.CellEditEvent<Patient, String> event) {
+    public void handleOnEditDateOfBirth(TableColumn.CellEditEvent<Nurse, String> event) {
         event.getRowValue().setDateOfBirth(event.getNewValue());
         this.doUpdate(event);
     }
@@ -157,7 +159,7 @@ public class AllCaregiverController {
      * @param event Event including the changed object and the change.
      */
     @FXML
-    public void handleOnEditCareLevel(TableColumn.CellEditEvent<Patient, String> event) {
+    public void handleOnEditCareLevel(TableColumn.CellEditEvent<Nurse, String> event) {
         event.getRowValue().setCareLevel(event.getNewValue());
         this.doUpdate(event);
     }
@@ -174,11 +176,11 @@ public class AllCaregiverController {
     }
 
     /**
-     * Updates a patient by calling the method <code>update()</code> of {@link PatientDao}.
+     * Updates a nurse by calling the method <code>update()</code> of {@link NurseDao}.
      *
      * @param event Event including the changed object and the change.
      */
-    private void doUpdate(TableColumn.CellEditEvent<Patient, String> event) {
+    private void doUpdate(TableColumn.CellEditEvent<Nurse, String> event) {
         try {
             this.dao.update(event.getRowValue());
         } catch (SQLException exception) {
@@ -187,30 +189,30 @@ public class AllCaregiverController {
     }
 
     /**
-     * Reloads all patients to the table by clearing the list of all patients and filling it again by all persisted
-     * patients, delivered by {@link PatientDao}.
+     * Reloads all nurses to the table by clearing the list of all nurses and filling it again by all persisted
+     * nurses, delivered by {@link NurseDao}.
      */
     private void readAllAndShowInTableView() {
-        this.patients.clear();
-        this.dao = DaoFactory.getDaoFactory().createPatientDAO();
+        this.nurses.clear();
+        this.dao = DaoFactory.getDaoFactory().createNurseDAO();
         try {
-            this.patients.addAll(this.dao.readAll());
+            this.nurses.addAll(this.dao.readAll());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
 
     /**
-     * This method handles events fired by the button to delete patients. It calls {@link PatientDao} to delete the
-     * patient from the database and removes the object from the list, which is the data source of the
+     * This method handles events fired by the button to delete nurses. It calls {@link NurseDao} to delete the
+     * nurse from the database and removes the object from the list, which is the data source of the
      * <code>TableView</code>.
      */
     @FXML
     public void handleDelete() {
-        Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
+        Nurse selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             try {
-                DaoFactory.getDaoFactory().createPatientDAO().deleteById(selectedItem.getPid());
+                DaoFactory.getDaoFactory().createNurseDAO().deleteById(selectedItem.getNid());
                 this.tableView.getItems().remove(selectedItem);
             } catch (SQLException exception) {
                 exception.printStackTrace();
@@ -219,9 +221,9 @@ public class AllCaregiverController {
     }
 
     /**
-     * This method handles the events fired by the button to add a patient. It collects the data from the
-     * <code>TextField</code>s, creates an object of class <code>Patient</code> of it and passes the object to
-     * {@link PatientDao} to persist the data.
+     * This method handles the events fired by the button to add a nurse. It collects the data from the
+     * <code>TextField</code>s, creates an object of class <code>Nurse</code> of it and passes the object to
+     * {@link NurseDao} to persist the data.
      */
     @FXML
     public void handleAdd() {
@@ -232,7 +234,7 @@ public class AllCaregiverController {
         String careLevel = this.textFieldCareLevel.getText();
         String roomNumber = this.textFieldRoomNumber.getText();
         try {
-            this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber));
+            this.dao.create(new Nurse(firstName, surname, phonenumber, is_locked));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
