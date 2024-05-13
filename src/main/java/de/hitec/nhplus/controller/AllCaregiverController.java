@@ -2,7 +2,6 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.NurseDao;
-import de.hitec.nhplus.datastorage.PatientDao;
 import de.hitec.nhplus.model.Nurse;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,22 +30,19 @@ public class AllCaregiverController {
     private TableView<Nurse> tableView;
 
     @FXML
-    private TableColumn<Nurse, Integer> columnId;
+    private TableColumn<Nurse, Integer> colID;
 
     @FXML
-    private TableColumn<Nurse, String> columnFirstName;
+    private TableColumn<Nurse, String> colFirstName;
 
     @FXML
-    private TableColumn<Nurse, String> columnSurname;
+    private TableColumn<Nurse, String> colSurname;
 
     @FXML
-    private TableColumn<Nurse, String> columnDateOfBirth;
+    private TableColumn<Nurse, String> colTelephone;
 
     @FXML
-    private TableColumn<Nurse, String> columnCareLevel;
-
-    @FXML
-    private TableColumn<Nurse, String> columnRoomNumber;
+    private TableColumn<Nurse, String> islocked;
 
     @FXML
     private Button buttonDelete;
@@ -61,13 +57,10 @@ public class AllCaregiverController {
     private TextField textFieldFirstName;
 
     @FXML
-    private TextField textFieldDateOfBirth;
+    private TextField textFieldTelephone;
 
     @FXML
-    private TextField textFieldCareLevel;
-
-    @FXML
-    private TextField textFieldRoomNumber;
+    private TextField textFieldIsLocked;
 
     private final ObservableList<Nurse> nurses = FXCollections.observableArrayList();
     private NurseDao dao;
@@ -80,24 +73,21 @@ public class AllCaregiverController {
     public void initialize() {
         this.readAllAndShowInTableView();
 
-        this.columnId.setCellValueFactory(new PropertyValueFactory<>("nid"));
+        this.colID.setCellValueFactory(new PropertyValueFactory<>("nid"));
 
         // CellValueFactory to show property values in TableView
-        this.columnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        this.colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         // CellFactory to write property values from with in the TableView
-        this.columnFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.colFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.columnSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
-        this.columnSurname.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.colSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.columnDateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
-        this.columnDateOfBirth.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.colTelephone.setCellValueFactory(new PropertyValueFactory<>("phonenumber"));
+        this.colTelephone.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.columnCareLevel.setCellValueFactory(new PropertyValueFactory<>("careLevel"));
-        this.columnCareLevel.setCellFactory(TextFieldTableCell.forTableColumn());
-
-        this.columnRoomNumber.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
-        this.columnRoomNumber.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.islocked.setCellValueFactory(new PropertyValueFactory<>("IS_LOCKED"));
+        this.islocked.setCellFactory(TextFieldTableCell.forTableColumn());
 
         //Anzeigen der Daten
         this.tableView.setItems(this.nurses);
@@ -115,9 +105,8 @@ public class AllCaregiverController {
                 AllCaregiverController.this.buttonAdd.setDisable(!AllCaregiverController.this.areInputDataValid());
         this.textFieldSurname.textProperty().addListener(inputNewNurseListener);
         this.textFieldFirstName.textProperty().addListener(inputNewNurseListener);
-        this.textFieldDateOfBirth.textProperty().addListener(inputNewNurseListener);
-        this.textFieldCareLevel.textProperty().addListener(inputNewNurseListener);
-        this.textFieldRoomNumber.textProperty().addListener(inputNewNurseListener);
+        this.textFieldTelephone.textProperty().addListener(inputNewNurseListener);
+        this.textFieldIsLocked.textProperty().addListener(inputNewNurseListener);
     }
 
     /**
@@ -143,24 +132,13 @@ public class AllCaregiverController {
     }
 
     /**
-     * When a cell of the column with dates of birth was changed, this method will be called, to persist the change.
-     *
-     * @param event Event including the changed object and the change.
-     */
-    @FXML
-    public void handleOnEditDateOfBirth(TableColumn.CellEditEvent<Nurse, String> event) {
-        event.getRowValue().setDateOfBirth(event.getNewValue());
-        this.doUpdate(event);
-    }
-
-    /**
      * When a cell of the column with care levels was changed, this method will be called, to persist the change.
      *
      * @param event Event including the changed object and the change.
      */
     @FXML
-    public void handleOnEditCareLevel(TableColumn.CellEditEvent<Nurse, String> event) {
-        event.getRowValue().setCareLevel(event.getNewValue());
+    public void handleOnEditTelephone(TableColumn.CellEditEvent<Nurse, String> event) {
+        event.getRowValue().setPhoneNumber(event.getNewValue());
         this.doUpdate(event);
     }
 
@@ -170,8 +148,8 @@ public class AllCaregiverController {
      * @param event Event including the changed object and the change.
      */
     @FXML
-    public void handleOnEditRoomNumber(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setRoomNumber(event.getNewValue());
+    public void handleOnEditLocked(TableColumn.CellEditEvent<Nurse, String> event){
+        event.getRowValue().setLocked(event.getNewValue());
         this.doUpdate(event);
     }
 
