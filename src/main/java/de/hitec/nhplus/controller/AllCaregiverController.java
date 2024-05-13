@@ -207,12 +207,10 @@ public class AllCaregiverController {
     public void handleAdd() {
         String surname = this.textFieldSurname.getText();
         String firstName = this.textFieldFirstName.getText();
-        String birthday = this.textFieldDateOfBirth.getText();
-        LocalDate date = DateConverter.convertStringToLocalDate(birthday);
-        String careLevel = this.textFieldCareLevel.getText();
-        String roomNumber = this.textFieldRoomNumber.getText();
+        String phonenumber = this.textFieldTelephone.getText();
+        String isLocked = this.textFieldIsLocked.getText();
         try {
-            this.dao.create(new Nurse(firstName, surname, phonenumber, is_locked));
+            this.dao.create(new Nurse(firstName, surname, phonenumber, isLocked));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -226,22 +224,16 @@ public class AllCaregiverController {
     private void clearTextfields() {
         this.textFieldFirstName.clear();
         this.textFieldSurname.clear();
-        this.textFieldDateOfBirth.clear();
-        this.textFieldCareLevel.clear();
-        this.textFieldRoomNumber.clear();
+        this.textFieldTelephone.clear();
+        this.textFieldIsLocked.clear();
     }
 
     private boolean areInputDataValid() {
-        if (!this.textFieldDateOfBirth.getText().isBlank()) {
-            try {
-                DateConverter.convertStringToLocalDate(this.textFieldDateOfBirth.getText());
-            } catch (Exception exception) {
-                return false;
-            }
+        if (!this.textFieldIsLocked.getText().isBlank() || !this.textFieldTelephone.getText().equals("false") || !this.textFieldTelephone.getText().equals("true")) {
+            return false;
         }
 
         return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() &&
-                !this.textFieldDateOfBirth.getText().isBlank() && !this.textFieldCareLevel.getText().isBlank() &&
-                !this.textFieldRoomNumber.getText().isBlank();
+                !this.textFieldTelephone.getText().isBlank() && !this.textFieldIsLocked.getText().isBlank();
     }
 }
