@@ -106,7 +106,7 @@ public class AllCaregiverController {
         this.textFieldSurname.textProperty().addListener(inputNewNurseListener);
         this.textFieldFirstName.textProperty().addListener(inputNewNurseListener);
         this.textFieldTelephone.textProperty().addListener(inputNewNurseListener);
-        this.textFieldIsLocked.textProperty().addListener(inputNewNurseListener);
+        //this.textFieldIsLocked.textProperty().addListener(inputNewNurseListener);
     }
 
     /**
