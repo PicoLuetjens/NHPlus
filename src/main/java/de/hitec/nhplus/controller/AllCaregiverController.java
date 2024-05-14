@@ -17,6 +17,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 /**
  * The <code>AllCaregiverController</code> contains the entire logic of the nurse view. It determines which data is displayed and how to react to events.
@@ -235,12 +236,9 @@ public class AllCaregiverController {
     }
 
     private boolean isPhoneNumberValid(String value){
-        for(int i = 0; i < value.length(); i++){
-            if(!Character.isDigit(value.charAt(i))){
-                return false;
-            }
-        }
-        return true;
+        String regex = "^[0-9+ \\-]+$";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(value).matches();
     }
 
     private boolean areInputDataValid() {
