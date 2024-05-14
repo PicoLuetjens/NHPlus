@@ -134,11 +134,9 @@ public class AllCaregiverController {
     public void handleOnEditTelephone(TableColumn.CellEditEvent<Nurse, String> event) {
         String oldValue = event.getOldValue();
         if(this.isPhoneNumberValid(event.getNewValue())) {
-            System.out.println("Number is valid");
             event.getRowValue().setPhoneNumber(event.getNewValue());
         }
         else{
-            System.out.println("Number is not valid");
             event.getRowValue().setPhoneNumber(oldValue);
             this.tableView.refresh();
         }
@@ -237,10 +235,6 @@ public class AllCaregiverController {
     }
 
     private boolean isPhoneNumberValid(String value){
-
-        System.out.println(value);
-        System.out.println(value.length());
-
         for(int i = 0; i < value.length(); i++){
             if(!Character.isDigit(value.charAt(i))){
                 return false;
