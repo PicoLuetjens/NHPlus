@@ -14,11 +14,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import de.hitec.nhplus.model.Patient;
-import de.hitec.nhplus.utils.DateConverter;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 
 /**
@@ -136,7 +134,7 @@ public class AllCaregiverController {
     @FXML
     public void handleOnEditTelephone(TableColumn.CellEditEvent<Nurse, String> event) {
         String oldValue = event.getOldValue();
-        if(this.isPhoneNumberValid) {
+        if(this.isPhoneNumberValid()) {
             event.getRowValue().setPhoneNumber(event.getNewValue());
         }
         else{
@@ -235,11 +233,16 @@ public class AllCaregiverController {
         this.textFieldTelephone.clear();
     }
 
-    private boolean isPhoneNumberValid{
+    private boolean isPhoneNumberValid(){
         String value = this.textFieldTelephone.getText();
 
+        String regex = "[0-9]+";
 
-        return true;
+        // Compile the regular expression into a pattern
+        Pattern pattern = Pattern.compile(regex);
+
+        // Match the pattern against the input string
+        return pattern.matcher(value).matches();
     }
 
     private boolean areInputDataValid() {
