@@ -59,9 +59,6 @@ public class AllCaregiverController {
     @FXML
     private TextField textFieldTelephone;
 
-    @FXML
-    private TextField textFieldIsLocked;
-
     private final ObservableList<Nurse> nurses = FXCollections.observableArrayList();
     private NurseDao dao;
 
@@ -83,10 +80,10 @@ public class AllCaregiverController {
         this.colSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
         this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colTelephone.setCellValueFactory(new PropertyValueFactory<>("phonenumber"));
+        this.colTelephone.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         this.colTelephone.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.islocked.setCellValueFactory(new PropertyValueFactory<>("IS_LOCKED"));
+        this.islocked.setCellValueFactory(new PropertyValueFactory<>("locked"));
         this.islocked.setCellFactory(TextFieldTableCell.forTableColumn());
 
         //Anzeigen der Daten
@@ -138,7 +135,13 @@ public class AllCaregiverController {
      */
     @FXML
     public void handleOnEditTelephone(TableColumn.CellEditEvent<Nurse, String> event) {
-        event.getRowValue().setPhoneNumber(event.getNewValue());
+        String oldValue = event.getOldValue();
+        if(this.isPhoneNumberValid) {
+            event.getRowValue().setPhoneNumber(event.getNewValue());
+        }
+        else{
+            event.getRowValue().setLocked(oldValue);
+        }
         this.doUpdate(event);
     }
 
@@ -149,7 +152,13 @@ public class AllCaregiverController {
      */
     @FXML
     public void handleOnEditLocked(TableColumn.CellEditEvent<Nurse, String> event){
-        event.getRowValue().setLocked(event.getNewValue());
+        String oldValue = event.getOldValue();
+        if("true".equals(event.getNewValue()) || "false".equals(event.getNewValue())){
+            event.getRowValue().setLocked(event.getNewValue());
+        }
+        else{
+            event.getRowValue().setLocked(oldValue);
+        }
         this.doUpdate(event);
     }
 
@@ -208,9 +217,8 @@ public class AllCaregiverController {
         String surname = this.textFieldSurname.getText();
         String firstName = this.textFieldFirstName.getText();
         String phonenumber = this.textFieldTelephone.getText();
-        String isLocked = this.textFieldIsLocked.getText();
         try {
-            this.dao.create(new Nurse(firstName, surname, phonenumber, isLocked));
+            this.dao.create(new Nurse(firstName, surname, phonenumber, "false"));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -225,15 +233,18 @@ public class AllCaregiverController {
         this.textFieldFirstName.clear();
         this.textFieldSurname.clear();
         this.textFieldTelephone.clear();
-        this.textFieldIsLocked.clear();
+    }
+
+    private boolean isPhoneNumberValid{
+        String value = this.textFieldTelephone.getText();
+
+
+        return true;
     }
 
     private boolean areInputDataValid() {
-        if (!this.textFieldIsLocked.getText().isBlank() || !this.textFieldTelephone.getText().equals("false") || !this.textFieldTelephone.getText().equals("true")) {
-            return false;
-        }
 
         return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() &&
-                !this.textFieldTelephone.getText().isBlank() && !this.textFieldIsLocked.getText().isBlank();
+                !this.textFieldTelephone.getText().isBlank() && this.isPhoneNumberValid();
     }
 }
