@@ -139,7 +139,7 @@ public class AllCaregiverController {
         }
         else{
             System.out.println("Number is not valid");
-            event.getRowValue().setLocked(oldValue);
+            event.getRowValue().setPhoneNumber(oldValue);
             this.tableView.refresh();
         }
         this.doUpdate(event);
