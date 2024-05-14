@@ -133,7 +133,7 @@ public class AllCaregiverController {
     @FXML
     public void handleOnEditTelephone(TableColumn.CellEditEvent<Nurse, String> event) {
         String oldValue = event.getOldValue();
-        if(this.isPhoneNumberValid()) {
+        if(this.isPhoneNumberValid(event.getNewValue())) {
             System.out.println("Number is valid");
             event.getRowValue().setPhoneNumber(event.getNewValue());
         }
@@ -236,8 +236,7 @@ public class AllCaregiverController {
         this.textFieldTelephone.clear();
     }
 
-    private boolean isPhoneNumberValid(){
-        String value = this.textFieldTelephone.getText();
+    private boolean isPhoneNumberValid(String value){
 
         System.out.println(value);
         System.out.println(value.length());
@@ -253,6 +252,6 @@ public class AllCaregiverController {
     private boolean areInputDataValid() {
 
         return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() &&
-                !this.textFieldTelephone.getText().isBlank() && this.isPhoneNumberValid();
+                !this.textFieldTelephone.getText().isBlank() && this.isPhoneNumberValid(this.textFieldTelephone.getText());
     }
 }
