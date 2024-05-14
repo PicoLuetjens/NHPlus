@@ -15,9 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.util.regex.Pattern;
-
 
 /**
  * The <code>AllCaregiverController</code> contains the entire logic of the nurse view. It determines which data is displayed and how to react to events.
@@ -135,9 +134,11 @@ public class AllCaregiverController {
     public void handleOnEditTelephone(TableColumn.CellEditEvent<Nurse, String> event) {
         String oldValue = event.getOldValue();
         if(this.isPhoneNumberValid()) {
+            System.out.println("Number is valid");
             event.getRowValue().setPhoneNumber(event.getNewValue());
         }
         else{
+            System.out.println("Number is not valid");
             event.getRowValue().setLocked(oldValue);
         }
         this.doUpdate(event);
@@ -156,6 +157,9 @@ public class AllCaregiverController {
         }
         else{
             event.getRowValue().setLocked(oldValue);
+
+            // Refresh the cell to display the old value again
+            this.tableView.refresh();
         }
         this.doUpdate(event);
     }
@@ -236,13 +240,15 @@ public class AllCaregiverController {
     private boolean isPhoneNumberValid(){
         String value = this.textFieldTelephone.getText();
 
-        String regex = "[0-9]+";
+        System.out.println(value);
+        System.out.println(value.length());
 
-        // Compile the regular expression into a pattern
-        Pattern pattern = Pattern.compile(regex);
-
-        // Match the pattern against the input string
-        return pattern.matcher(value).matches();
+        for(int i = 0; i < value.length(); i++){
+            if(!Character.isDigit(value.charAt(i))){
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean areInputDataValid() {
