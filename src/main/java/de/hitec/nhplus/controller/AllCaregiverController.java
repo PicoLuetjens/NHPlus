@@ -140,6 +140,7 @@ public class AllCaregiverController {
         else{
             System.out.println("Number is not valid");
             event.getRowValue().setLocked(oldValue);
+            this.tableView.refresh();
         }
         this.doUpdate(event);
     }
@@ -157,8 +158,6 @@ public class AllCaregiverController {
         }
         else{
             event.getRowValue().setLocked(oldValue);
-
-            // Refresh the cell to display the old value again
             this.tableView.refresh();
         }
         this.doUpdate(event);
