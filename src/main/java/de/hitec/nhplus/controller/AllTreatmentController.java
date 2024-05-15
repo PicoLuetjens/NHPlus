@@ -44,6 +44,12 @@ public class AllTreatmentController {
     private TableColumn<Treatment, String> columnDescription;
 
     @FXML
+    private TableColumn<Treatment, String> nurse;
+
+    @FXML
+    private TableColumn<Treatment, Integer> nursePhone;
+
+    @FXML
     private ComboBox<String> comboBoxPatientSelection;
 
     @FXML
