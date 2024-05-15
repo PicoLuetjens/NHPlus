@@ -2,6 +2,7 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.TreatmentDao;
+import de.hitec.nhplus.model.Nurse;
 import de.hitec.nhplus.model.Patient;
 import de.hitec.nhplus.model.Treatment;
 import de.hitec.nhplus.utils.DateConverter;
@@ -45,6 +46,7 @@ public class NewTreatmentController {
 
 	private AllTreatmentController controller;
 	private Patient patient;
+	private Nurse nurse;
 	private Stage stage;
 
 	public void initialize(AllTreatmentController controller, Stage stage, Patient patient) {
@@ -86,7 +88,7 @@ public class NewTreatmentController {
 		LocalTime end = DateConverter.convertStringToLocalTime(textFieldEnd.getText());
 		String description = textFieldDescription.getText();
 		String remarks = textAreaRemarks.getText();
-		Treatment treatment = new Treatment(patient.getPid(), date, begin, end, description, remarks);
+		Treatment treatment = new Treatment(patient.getPid(), date, begin, end, description, remarks, nurse.getSurname(), nurse.getFirstName(), nurse.getPhoneNumber());
 		createTreatment(treatment);
 		controller.readAllAndShowInTableView();
 		stage.close();

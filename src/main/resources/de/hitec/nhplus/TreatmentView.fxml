@@ -80,8 +80,8 @@
         <DatePicker fx:id="datePicker" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
         <Label fx:id="labelPatientName" text="Name" GridPane.columnIndex="1"/>
         <Label fx:id="labelCareLevel" text="Pflegestufe" GridPane.columnIndex="3"/>
-        <Label fx:id="" text="NurseName" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <Label fx:id="" text="PhoneNumber" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+        <Label fx:id="nurses" text="NurseName" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label fx:id="nursePhonenumber" text="PhoneNumber" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
     </GridPane>
     <HBox layoutX="298.0" layoutY="237.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="50.0">
         <Button fx:id="btnChange" mnemonicParsing="false" onAction="#handleChange" text="Ändern"/>
