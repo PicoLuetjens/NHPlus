@@ -44,6 +44,12 @@ public class AllTreatmentController {
     private TableColumn<Treatment, String> columnDescription;
 
     @FXML
+    private TableColumn<Treatment, String> nurse;
+
+    @FXML
+    private TableColumn<Treatment, String> nursePhone;
+
+    @FXML
     private ComboBox<String> comboBoxPatientSelection;
 
     @FXML
@@ -66,6 +72,8 @@ public class AllTreatmentController {
         this.columnBegin.setCellValueFactory(new PropertyValueFactory<>("begin"));
         this.columnEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
         this.columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        this.nurse.setCellValueFactory(new PropertyValueFactory<>("nurse"));
+        this.nursePhone.setCellValueFactory(new PropertyValueFactory<>("phonenumber"));
         this.tableView.setItems(this.treatments);
 
         // Disabling the button to delete treatments as long, as no treatment was selected.
