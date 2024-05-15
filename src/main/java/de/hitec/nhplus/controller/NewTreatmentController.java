@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -105,6 +107,7 @@ public class NewTreatmentController {
 	}
 
 	private boolean areInputDataInvalid() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		if (this.textFieldBegin.getText() == null || this.textFieldEnd.getText() == null) {
 			return true;
 		}
@@ -115,6 +118,11 @@ public class NewTreatmentController {
 				return true;
 			}
 		} catch (Exception exception) {
+			return true;
+		}
+		try {
+			format.parse(datePicker.getAccessibleText());
+		} catch (ParseException e) {
 			return true;
 		}
 		if (!textFieldBegin.getText().matches("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$") || !textFieldEnd.getText().matches("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")) {
