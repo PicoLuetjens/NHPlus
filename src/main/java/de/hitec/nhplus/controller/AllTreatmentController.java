@@ -78,11 +78,10 @@ public class AllTreatmentController {
     }
 
     public void readAllAndShowInTableView() {
-        this.treatments.clear();
         comboBoxPatientSelection.getSelectionModel().select(0);
         this.dao = DaoFactory.getDaoFactory().createTreatmentDao();
         try {
-            this.treatments.addAll(dao.readAll());
+            this.treatments.setAll(dao.readAll());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -110,7 +109,7 @@ public class AllTreatmentController {
 
         if (selectedPatient.equals("alle")) {
             try {
-                this.treatments.addAll(this.dao.readAll());
+                this.treatments.setAll(this.dao.readAll());
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
@@ -119,7 +118,7 @@ public class AllTreatmentController {
         Patient patient = searchInList(selectedPatient);
         if (patient !=null) {
             try {
-                this.treatments.addAll(this.dao.readTreatmentsByPid(patient.getPid()));
+                this.treatments.setAll(this.dao.readTreatmentsByPid(patient.getPid()));
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
