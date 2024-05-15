@@ -57,6 +57,7 @@ public class AllTreatmentController {
     public void initialize() {
         readAllAndShowInTableView();
         comboBoxPatientSelection.setItems(patientSelection);
+        this.createComboBoxData();
         comboBoxPatientSelection.getSelectionModel().select(0);
 
         this.columnId.setCellValueFactory(new PropertyValueFactory<>("tid"));
@@ -73,7 +74,7 @@ public class AllTreatmentController {
                 (observableValue, oldTreatment, newTreatment) ->
                         AllTreatmentController.this.buttonDelete.setDisable(newTreatment == null));
 
-        this.createComboBoxData();
+
     }
 
     public void readAllAndShowInTableView() {

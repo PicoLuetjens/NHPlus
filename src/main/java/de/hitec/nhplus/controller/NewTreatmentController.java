@@ -121,10 +121,11 @@ public class NewTreatmentController {
 			return true;
 		}
 		try {
-			format.parse(datePicker.getAccessibleText());
+			format.parse(DateConverter.convertLocalDateToString(this.datePicker.getValue()));
 		} catch (ParseException e) {
 			return true;
 		}
+
 		if (!textFieldBegin.getText().matches("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$") || !textFieldEnd.getText().matches("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")) {
 			return true;
 		}
