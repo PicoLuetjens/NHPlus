@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import de.hitec.nhplus.model.Patient;
 import de.hitec.nhplus.model.Treatment;
+import de.hitec.nhplus.model.Nurse;
 import de.hitec.nhplus.utils.DateConverter;
 
 import java.sql.SQLException;
@@ -34,12 +35,19 @@ public class TreatmentController {
     private TextArea textAreaRemarks;
 
     @FXML
+    private Label nurses;
+
+    @FXML
+    private Label nursePhonenumber;
+
+    @FXML
     private DatePicker datePicker;
 
     private AllTreatmentController controller;
     private Stage stage;
     private Patient patient;
     private Treatment treatment;
+    private Nurse nurse;
 
     public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
         this.stage = stage;
@@ -57,6 +65,8 @@ public class TreatmentController {
     private void showData(){
         this.labelPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
         this.labelCareLevel.setText(patient.getCareLevel());
+        this.nurses.setText(treatment.getNurseSurname() + ", " + treatment.getNurseFirstname());
+        this.nursePhonenumber.setText(treatment.getNursePhonenumber());
         LocalDate date = DateConverter.convertStringToLocalDate(treatment.getDate());
         this.datePicker.setValue(date);
         this.textFieldBegin.setText(this.treatment.getBegin());

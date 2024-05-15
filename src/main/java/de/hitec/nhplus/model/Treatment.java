@@ -14,6 +14,13 @@ public class Treatment {
     private String description;
     private String remarks;
 
+
+
+    private String nurseSurname;
+    private String nurseFirstname;
+    private String nursePhonenumber;
+
+
     /**
      * Constructor to initiate an object of class <code>Treatment</code> with the given parameter. Use this constructor
      * to initiate objects, which are not persisted yet, because it will not have a treatment id (tid).
@@ -26,13 +33,16 @@ public class Treatment {
      * @param remarks Remarks to the treatment.
      */
     public Treatment(long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks) {
+                     LocalTime end, String description, String remarks, String nurseSurname, String nurseFirstname, String nursePhonenumber) {
         this.pid = pid;
         this.date = date;
         this.begin = begin;
         this.end = end;
         this.description = description;
         this.remarks = remarks;
+        this.nurseSurname = nurseSurname;
+        this.nurseFirstname = nurseFirstname;
+        this.nursePhonenumber = nursePhonenumber;
     }
 
     /**
@@ -48,7 +58,7 @@ public class Treatment {
      * @param remarks Remarks to the treatment.
      */
     public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks) {
+                     LocalTime end, String description, String remarks, String nurseSurname, String nurseFirstname, String nursePhonenumber) {
         this.tid = tid;
         this.pid = pid;
         this.date = date;
@@ -56,6 +66,9 @@ public class Treatment {
         this.end = end;
         this.description = description;
         this.remarks = remarks;
+        this.nurseSurname = nurseSurname;
+        this.nurseFirstname = nurseFirstname;
+        this.nursePhonenumber = nursePhonenumber;
     }
 
     public long getTid() {
@@ -105,7 +118,29 @@ public class Treatment {
     public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
+    public String getNurseSurname() {
+        return nurseSurname;
+    }
 
+    public void setNurseSurname(String nurseSurname) {
+        this.nurseSurname = nurseSurname;
+    }
+
+    public String getNurseFirstname() {
+        return nurseFirstname;
+    }
+
+    public void setNurseFirstname(String nurseFirstname) {
+        this.nurseFirstname = nurseFirstname;
+    }
+
+    public String getNursePhonenumber() {
+        return nursePhonenumber;
+    }
+
+    public void setNursePhonenumber(String nursePhonenumber) {
+        this.nursePhonenumber = nursePhonenumber;
+    }
     public String toString() {
         return "\nBehandlung" + "\nTID: " + this.tid +
                 "\nPID: " + this.pid +
