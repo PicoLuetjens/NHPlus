@@ -34,6 +34,7 @@ public class LoginForm extends Application {
 			exception.printStackTrace();
 		}
 	}
+
 	public static void closeStage() {
 		loginStage.close();
 	}
