@@ -2,7 +2,6 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.NurseDao;
-import de.hitec.nhplus.datastorage.PatientDao;
 import de.hitec.nhplus.datastorage.TreatmentDao;
 import de.hitec.nhplus.model.Nurse;
 import de.hitec.nhplus.model.Patient;
@@ -102,6 +101,8 @@ public class NewTreatmentController {
 		LocalTime end = DateConverter.convertStringToLocalTime(textFieldEnd.getText());
 		String description = textFieldDescription.getText();
 		String remarks = textAreaRemarks.getText();
+		String selectedNurse = this.comboBoxNurseSelection.getSelectionModel().getSelectedItem();
+		Nurse nurse = searchInList(selectedNurse);
 		Treatment treatment = new Treatment(patient.getPid(), date, begin, end, description, remarks, nurse.getSurname(), nurse.getFirstName(), nurse.getPhoneNumber());
 		createTreatment(treatment);
 		controller.readAllAndShowInTableView();
@@ -153,12 +154,21 @@ public class NewTreatmentController {
 		try {
 			nurseList = (ArrayList<Nurse>) dao.readAll();
 			this.nurseSelection.add("alle");
-			for (Nurse nurse: nurseList) {
+			for (Nurse nurse : nurseList) {
 				this.nurseSelection.add(nurse.getSurname());
 			}
 		} catch (SQLException exception) {
 			exception.printStackTrace();
 		}
+	}
+
+	private Nurse searchInList(String surname) {
+		for (Nurse nurse : this.nurseList) {
+			if (nurse.getSurname().equals(surname)) {
+				return nurse;
+			}
+		}
+		return null;
 	}
 
 	public void handleComboBox(ActionEvent event) {
