@@ -43,6 +43,7 @@ public class TreatmentController {
     @FXML
     private DatePicker datePicker;
 
+
     private AllTreatmentController controller;
     private Stage stage;
     private Patient patient;
