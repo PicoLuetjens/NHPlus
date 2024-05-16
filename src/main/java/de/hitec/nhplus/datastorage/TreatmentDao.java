@@ -170,16 +170,17 @@ public class TreatmentDao extends DaoImp<Treatment> {
         try {
             final String SQL =
                     "UPDATE treatment SET " +
-						"pid = ?, " +
-						"treatment_date = ?, " +
-						"begin = ?, " +
-						"end = ?, " +
-						"description = ?, " +
-						"remark = ? " +
-						"nurseSurname = ?" +
-						"nurseFirstname = ?" +
-						"nursePhonenumber = ?" +
-						"WHERE tid = ?";
+                            "pid = ?, " +
+                            "treatment_date = ?, " +
+                            "begin = ?, " +
+                            "end = ?, " +
+                            "description = ?, " +
+                            "remark = ? " +
+                            "nurseSurname = ?" +
+                            "nurseFirstname = ?" +
+                            "nursePhonenumber = ?" +
+                            "IS_LOCKED = ?" +
+                            "WHERE tid = ?";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, treatment.getPid());
             preparedStatement.setString(2, treatment.getDate());

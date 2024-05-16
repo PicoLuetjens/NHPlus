@@ -43,6 +43,8 @@ public class TreatmentController {
     @FXML
     private DatePicker datePicker;
 
+    @FXML
+    private TextField textfieldLocked;
 
     private AllTreatmentController controller;
     private Stage stage;
@@ -74,6 +76,7 @@ public class TreatmentController {
         this.textFieldEnd.setText(this.treatment.getEnd());
         this.textFieldDescription.setText(this.treatment.getDescription());
         this.textAreaRemarks.setText(this.treatment.getRemarks());
+        this.textfieldLocked.setText(this.treatment.getIsLocked());
     }
 
     @FXML
@@ -83,6 +86,7 @@ public class TreatmentController {
         this.treatment.setEnd(textFieldEnd.getText());
         this.treatment.setDescription(textFieldDescription.getText());
         this.treatment.setRemarks(textAreaRemarks.getText());
+        this.treatment.setIsLocked(textfieldLocked.getText());
         doUpdate();
         controller.readAllAndShowInTableView();
         stage.close();
