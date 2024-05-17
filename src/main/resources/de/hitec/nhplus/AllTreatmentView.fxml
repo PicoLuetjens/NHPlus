@@ -20,6 +20,7 @@
                 <TableColumn fx:id="columnDescription" maxWidth="7500.0" minWidth="150.0" prefWidth="300.0" text="Kurzbeschreibung" />
                 <TableColumn fx:id="nurseName" maxWidth="7500.0" minWidth="150.0" prefWidth="300.0" text="Pflegekraft" />
                 <TableColumn fx:id="nursePhone" maxWidth="7500.0" minWidth="150.0" prefWidth="300.0" text="Telefonnummer" />
+                <TableColumn fx:id="isLocked" maxWidth="7500.0" minWidth="150.0" prefWidth="300.0" text="gesperrt"/>
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
