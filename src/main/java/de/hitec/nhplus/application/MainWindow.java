@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -26,6 +27,7 @@ public class MainWindow extends Application {
 			FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/MainWindowView.fxml"));
 			BorderPane pane = loader.load();
 			Scene scene = new Scene(pane);
+			primaryStage.getIcons().add(new Image("icon.png"));
 			this.primaryStage.setTitle("NHPlus");
 			this.primaryStage.setScene(scene);
 			this.primaryStage.setResizable(true);

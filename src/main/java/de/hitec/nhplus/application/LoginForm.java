@@ -5,6 +5,7 @@ import de.hitec.nhplus.controller.LoginFormController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -25,6 +26,7 @@ public class LoginForm extends Application {
 			FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/LoginFormView.fxml"));
 			StackPane pane = loader.load();
 			Scene scene = new Scene(pane);
+			loginStage.getIcons().add(new Image("icon.png"));
 			loginStage.setTitle("Login");
 			loginStage.setScene(scene);
 			loginStage.setResizable(false);
