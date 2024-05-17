@@ -120,7 +120,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
             LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
             LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
             Treatment treatment = new Treatment(result.getLong(1), result.getLong(2),
-                    date, begin, end, result.getString(6), result.getString(7),result.getString(8), result.getString(9), result.getString(10), result.getString(11));
+                    date, begin, end, result.getString(6), result.getString(7), result.getString(8), result.getString(9), result.getString(10), result.getString(11));
             list.add(treatment);
         }
         return list;
@@ -175,10 +175,10 @@ public class TreatmentDao extends DaoImp<Treatment> {
                             "begin = ?, " +
                             "end = ?, " +
                             "description = ?, " +
-                            "remark = ? " +
-                            "nurseSurname = ?" +
-                            "nurseFirstname = ?" +
-                            "nursePhonenumber = ?" +
+                            "remark = ?," +
+                            "nurseSurname = ?," +
+                            "nurseFirstname = ?," +
+                            "nursePhonenumber = ?," +
                             "IS_LOCKED = ?" +
                             "WHERE tid = ?";
             preparedStatement = this.connection.prepareStatement(SQL);
@@ -191,8 +191,10 @@ public class TreatmentDao extends DaoImp<Treatment> {
             preparedStatement.setString(7, treatment.getNurseSurname());
             preparedStatement.setString(8, treatment.getNurseFirstname());
             preparedStatement.setString(9, treatment.getNursePhonenumber());
-            preparedStatement.setLong(10, treatment.getTid());
+            preparedStatement.setLong(11, treatment.getTid());
+            preparedStatement.setString(10, treatment.getIsLocked());
         } catch (SQLException exception) {
+            System.out.println("catch");
             exception.printStackTrace();
         }
         return preparedStatement;
