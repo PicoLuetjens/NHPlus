@@ -86,7 +86,12 @@ public class TreatmentController {
         this.treatment.setEnd(textFieldEnd.getText());
         this.treatment.setDescription(textFieldDescription.getText());
         this.treatment.setRemarks(textAreaRemarks.getText());
-        this.treatment.setIsLocked(textfieldLocked.getText());
+
+        String input = this.textfieldLocked.getText();
+        if("true".equals(input) || "false".equals(input)){
+            this.treatment.setIsLocked(textfieldLocked.getText());
+        }
+
         doUpdate();
         controller.readAllAndShowInTableView();
         stage.close();

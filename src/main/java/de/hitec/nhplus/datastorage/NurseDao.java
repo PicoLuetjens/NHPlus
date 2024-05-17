@@ -87,7 +87,7 @@ public class NurseDao extends DaoImp<Nurse> {
     protected PreparedStatement getReadAllStatement() {
         PreparedStatement statement = null;
         try {
-            final String SQL = "SELECT * FROM nurse";
+            final String SQL = "SELECT * FROM nurse Where IS_LOCKED = 'false'";
             statement = this.connection.prepareStatement(SQL);
         } catch (SQLException exception) {
             exception.printStackTrace();
