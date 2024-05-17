@@ -19,6 +19,7 @@ public class Treatment {
     private String nurseSurname;
     private String nurseFirstname;
     private String nursePhonenumber;
+    private String locked;
 
 
     /**
@@ -33,7 +34,7 @@ public class Treatment {
      * @param remarks Remarks to the treatment.
      */
     public Treatment(long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks, String nurseSurname, String nurseFirstname, String nursePhonenumber) {
+                     LocalTime end, String description, String remarks, String nurseSurname, String nurseFirstname, String nursePhonenumber, String locked) {
         this.pid = pid;
         this.date = date;
         this.begin = begin;
@@ -43,6 +44,7 @@ public class Treatment {
         this.nurseSurname = nurseSurname;
         this.nurseFirstname = nurseFirstname;
         this.nursePhonenumber = nursePhonenumber;
+        this.locked = locked;
     }
 
     /**
@@ -58,7 +60,7 @@ public class Treatment {
      * @param remarks Remarks to the treatment.
      */
     public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks, String nurseSurname, String nurseFirstname, String nursePhonenumber) {
+                     LocalTime end, String description, String remarks, String nurseSurname, String nurseFirstname, String nursePhonenumber, String locked) {
         this.tid = tid;
         this.pid = pid;
         this.date = date;
@@ -69,6 +71,7 @@ public class Treatment {
         this.nurseSurname = nurseSurname;
         this.nurseFirstname = nurseFirstname;
         this.nursePhonenumber = nursePhonenumber;
+        this.locked = locked;
     }
 
     public long getTid() {
@@ -136,6 +139,14 @@ public class Treatment {
 
     public String getNursePhonenumber() {
         return nursePhonenumber;
+    }
+
+    public String getIsLocked() {
+        return locked;
+    }
+
+    public void setIsLocked(String locked) {
+        this.locked = locked;
     }
 
     public void setNursePhonenumber(String nursePhonenumber) {
