@@ -96,7 +96,21 @@ public class TreatmentDao extends DaoImp<Treatment> {
     protected PreparedStatement getReadAllStatement() {
         PreparedStatement statement = null;
         try {
-            final String SQL = "SELECT * FROM treatment WHERE IS_LOCKED = 'false'";
+            final String SQL1 = "SELECT * FROM treatment WHERE IS_LOCKED = 'false'";
+            final String SQL = "SELECT T.tid, " +
+                    "T.pid, " +
+                    "T.treatment_date, " +
+                    "T.begin, " +
+                    "T.end, " +
+                    "T.description, " +
+                    "T.remark, " +
+                    "CASE WHEN N.IS_LOCKED = 'true' THEN 'gesperrt' ELSE N.firstname END AS nurseFirstname, " +
+                    "CASE WHEN N.IS_LOCKED = 'true' THEN 'gesperrt' ELSE N.surname END AS nurseSurname, " +
+                    "CASE WHEN N.IS_LOCKED = 'true' THEN 'gesperrt' ELSE N.phonenumber END AS nursePhonenumber, " +
+                    "T.IS_LOCKED " +
+                    "FROM treatment T " +
+                    "INNER JOIN NURSE N ON T.nurseFirstname = N.firstname AND T.nurseSurname = N.surname " +
+                    "WHERE T.IS_LOCKED = 'false'";
             statement = this.connection.prepareStatement(SQL);
         } catch (SQLException exception) {
             exception.printStackTrace();
