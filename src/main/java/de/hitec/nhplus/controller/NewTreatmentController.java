@@ -1,12 +1,16 @@
 package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
+import de.hitec.nhplus.datastorage.NurseDao;
 import de.hitec.nhplus.datastorage.TreatmentDao;
 import de.hitec.nhplus.model.Nurse;
 import de.hitec.nhplus.model.Patient;
 import de.hitec.nhplus.model.Treatment;
 import de.hitec.nhplus.utils.DateConverter;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -17,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class NewTreatmentController {
 
@@ -44,6 +49,11 @@ public class NewTreatmentController {
 	@FXML
 	private Button buttonAdd;
 
+	@FXML
+	private ComboBox<String> comboBoxNurseSelection;
+	private final ObservableList<String> nurseSelection = FXCollections.observableArrayList();
+	private ArrayList<Nurse> nurseList;
+
 	private AllTreatmentController controller;
 	private Patient patient;
 	private Nurse nurse;
@@ -52,6 +62,9 @@ public class NewTreatmentController {
 	public void initialize(AllTreatmentController controller, Stage stage, Patient patient) {
 		this.controller = controller;
 		this.patient = patient;
+		comboBoxNurseSelection.setItems(nurseSelection);
+		this.createComboBoxData();
+		comboBoxNurseSelection.getSelectionModel().select(0);
 		this.stage = stage;
 
 		this.buttonAdd.setDisable(true);
@@ -88,7 +101,9 @@ public class NewTreatmentController {
 		LocalTime end = DateConverter.convertStringToLocalTime(textFieldEnd.getText());
 		String description = textFieldDescription.getText();
 		String remarks = textAreaRemarks.getText();
-		Treatment treatment = new Treatment(patient.getPid(), date, begin, end, description, remarks, nurse.getSurname(), nurse.getFirstName(), nurse.getPhoneNumber());
+		String selectedNurse = this.comboBoxNurseSelection.getSelectionModel().getSelectedItem();
+		Nurse nurse = searchInList(selectedNurse);
+		Treatment treatment = new Treatment(patient.getPid(), date, begin, end, description, remarks, nurse.getSurname(), nurse.getFirstName(), nurse.getPhoneNumber(), "false");
 		createTreatment(treatment);
 		controller.readAllAndShowInTableView();
 		stage.close();
@@ -132,5 +147,30 @@ public class NewTreatmentController {
 			return true;
 		}
 		return this.textFieldDescription.getText().isBlank() || this.datePicker.getValue() == null;
+	}
+
+	private void createComboBoxData() {
+		NurseDao dao = DaoFactory.getDaoFactory().createNurseDAO();
+		try {
+			nurseList = (ArrayList<Nurse>) dao.readAll();
+			this.nurseSelection.add("alle");
+			for (Nurse nurse : nurseList) {
+				this.nurseSelection.add(nurse.getSurname());
+			}
+		} catch (SQLException exception) {
+			exception.printStackTrace();
+		}
+	}
+
+	private Nurse searchInList(String surname) {
+		for (Nurse nurse : this.nurseList) {
+			if (nurse.getSurname().equals(surname)) {
+				return nurse;
+			}
+		}
+		return null;
+	}
+
+	public void handleComboBox(ActionEvent event) {
 	}
 }

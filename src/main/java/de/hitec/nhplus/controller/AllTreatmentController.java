@@ -4,6 +4,7 @@ import de.hitec.nhplus.Main;
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.PatientDao;
 import de.hitec.nhplus.datastorage.TreatmentDao;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -44,10 +45,7 @@ public class AllTreatmentController {
     private TableColumn<Treatment, String> columnDescription;
 
     @FXML
-    private TableColumn<Treatment, String> nurseSurname;
-
-    @FXML
-    private TableColumn<Treatment, String> nurseFirstname;
+    private TableColumn<Treatment, String> nurseName;
 
     @FXML
     private TableColumn<Treatment, String> nursePhone;
@@ -57,6 +55,9 @@ public class AllTreatmentController {
 
     @FXML
     private Button buttonDelete;
+
+    @FXML
+    private TableColumn<Treatment, String> isLocked;
 
     private final ObservableList<Treatment> treatments = FXCollections.observableArrayList();
     private TreatmentDao dao;
@@ -68,25 +69,20 @@ public class AllTreatmentController {
         comboBoxPatientSelection.setItems(patientSelection);
         this.createComboBoxData();
         comboBoxPatientSelection.getSelectionModel().select(0);
-
         this.columnId.setCellValueFactory(new PropertyValueFactory<>("tid"));
         this.columnPid.setCellValueFactory(new PropertyValueFactory<>("pid"));
         this.columnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         this.columnBegin.setCellValueFactory(new PropertyValueFactory<>("begin"));
         this.columnEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
         this.columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        this.nurseSurname.setCellValueFactory(new PropertyValueFactory<>("nurseSurname"));
-        this.nurseFirstname.setCellValueFactory(new PropertyValueFactory<>("nurseFirstname"));
+        this.nurseName.setCellValueFactory(patientSelection ->  Bindings.createStringBinding(() -> patientSelection.getValue().getNurseSurname() + ", " + patientSelection.getValue().getNurseFirstname()));
         this.nursePhone.setCellValueFactory(new PropertyValueFactory<>("nursePhonenumber"));
+        this.isLocked.setCellValueFactory(new PropertyValueFactory<>("isLocked"));
         this.tableView.setItems(this.treatments);
-
-        // Disabling the button to delete treatments as long, as no treatment was selected.
         this.buttonDelete.setDisable(true);
         this.tableView.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldTreatment, newTreatment) ->
                         AllTreatmentController.this.buttonDelete.setDisable(newTreatment == null));
-
-
     }
 
     public void readAllAndShowInTableView() {
@@ -112,7 +108,6 @@ public class AllTreatmentController {
         }
     }
 
-
     @FXML
     public void handleComboBox() {
         String selectedPatient = this.comboBoxPatientSelection.getSelectionModel().getSelectedItem();
@@ -126,7 +121,6 @@ public class AllTreatmentController {
                 exception.printStackTrace();
             }
         }
-
         Patient patient = searchInList(selectedPatient);
         if (patient !=null) {
             try {
@@ -189,13 +183,9 @@ public class AllTreatmentController {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/NewTreatmentView.fxml"));
             AnchorPane pane = loader.load();
             Scene scene = new Scene(pane);
-
-            // the primary stage should stay in the background
             Stage stage = new Stage();
-
             NewTreatmentController controller = loader.getController();
             controller.initialize(this, stage, patient);
-
             stage.setScene(scene);
             stage.setResizable(false);
             stage.showAndWait();
@@ -209,12 +199,9 @@ public class AllTreatmentController {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/TreatmentView.fxml"));
             AnchorPane pane = loader.load();
             Scene scene = new Scene(pane);
-
-            // the primary stage should stay in the background
             Stage stage = new Stage();
             TreatmentController controller = loader.getController();
             controller.initializeController(this, stage, treatment);
-
             stage.setScene(scene);
             stage.setResizable(false);
             stage.showAndWait();
