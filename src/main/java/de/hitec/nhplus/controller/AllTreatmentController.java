@@ -56,6 +56,9 @@ public class AllTreatmentController {
     @FXML
     private Button buttonDelete;
 
+    @FXML
+    private TableColumn<Treatment, String> isLocked;
+
     private final ObservableList<Treatment> treatments = FXCollections.observableArrayList();
     private TreatmentDao dao;
     private final ObservableList<String> patientSelection = FXCollections.observableArrayList();
@@ -74,6 +77,7 @@ public class AllTreatmentController {
         this.columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         this.nurseName.setCellValueFactory(patientSelection ->  Bindings.createStringBinding(() -> patientSelection.getValue().getNurseSurname() + ", " + patientSelection.getValue().getNurseFirstname()));
         this.nursePhone.setCellValueFactory(new PropertyValueFactory<>("nursePhonenumber"));
+        this.isLocked.setCellValueFactory(new PropertyValueFactory<>("isLocked"));
         this.tableView.setItems(this.treatments);
         this.buttonDelete.setDisable(true);
         this.tableView.getSelectionModel().selectedItemProperty().addListener(
