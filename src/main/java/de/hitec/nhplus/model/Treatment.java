@@ -6,159 +6,171 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Treatment {
-    private long tid;
-    private final long pid;
-    private LocalDate date;
-    private LocalTime begin;
-    private LocalTime end;
-    private String description;
-    private String remarks;
+	private long tid;
+	private final long pid;
+	private LocalDate date;
+	private LocalTime begin;
+	private LocalTime end;
+	private String description;
+	private String remarks;
 
+	private String nurseSurname;
+	private String nurseFirstname;
+	private String nursePhonenumber;
+	private String nurseLocked;
+	private String locked;
 
+	/**
+	 * Constructor to initiate an object of class <code>Treatment</code> with the given parameter. Use this constructor
+	 * to initiate objects, which are not persisted yet, because it will not have a treatment id (tid).
+	 *
+	 * @param pid         Id of the treated patient.
+	 * @param date        Date of the Treatment.
+	 * @param begin       Time of the start of the treatment in format "hh:MM"
+	 * @param end         Time of the end of the treatment in format "hh:MM".
+	 * @param description Description of the treatment.
+	 * @param remarks     Remarks to the treatment.
+	 */
+	public Treatment(long pid, LocalDate date, LocalTime begin,
+		LocalTime end, String description, String remarks, String nurseSurname, String nurseFirstname, String nursePhonenumber, String nurseLocked, String locked) {
+		this.pid = pid;
+		this.date = date;
+		this.begin = begin;
+		this.end = end;
+		this.description = description;
+		this.remarks = remarks;
+		this.nurseSurname = nurseSurname;
+		this.nurseFirstname = nurseFirstname;
+		this.nursePhonenumber = nursePhonenumber;
+		this.nurseLocked = nurseLocked;
+		this.locked = locked;
+	}
 
-    private String nurseSurname;
-    private String nurseFirstname;
-    private String nursePhonenumber;
-    private String locked;
+	/**
+	 * Constructor to initiate an object of class <code>Treatment</code> with the given parameter. Use this constructor
+	 * to initiate objects, which are already persisted and have a treatment id (tid).
+	 *
+	 * @param tid         Id of the treatment.
+	 * @param pid         Id of the treated patient.
+	 * @param date        Date of the Treatment.
+	 * @param begin       Time of the start of the treatment in format "hh:MM"
+	 * @param end         Time of the end of the treatment in format "hh:MM".
+	 * @param description Description of the treatment.
+	 * @param remarks     Remarks to the treatment.
+	 */
+	public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
+		LocalTime end, String description, String remarks, String nurseSurname, String nurseFirstname, String nursePhonenumber, String nurseLocked, String locked) {
+		this.tid = tid;
+		this.pid = pid;
+		this.date = date;
+		this.begin = begin;
+		this.end = end;
+		this.description = description;
+		this.remarks = remarks;
+		this.nurseSurname = nurseSurname;
+		this.nurseFirstname = nurseFirstname;
+		this.nursePhonenumber = nursePhonenumber;
+		this.nurseLocked = nurseLocked;
+		this.locked = locked;
+	}
 
+	public long getTid() {
+		return tid;
+	}
 
-    /**
-     * Constructor to initiate an object of class <code>Treatment</code> with the given parameter. Use this constructor
-     * to initiate objects, which are not persisted yet, because it will not have a treatment id (tid).
-     *
-     * @param pid Id of the treated patient.
-     * @param date Date of the Treatment.
-     * @param begin Time of the start of the treatment in format "hh:MM"
-     * @param end Time of the end of the treatment in format "hh:MM".
-     * @param description Description of the treatment.
-     * @param remarks Remarks to the treatment.
-     */
-    public Treatment(long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks, String nurseSurname, String nurseFirstname, String nursePhonenumber, String locked) {
-        this.pid = pid;
-        this.date = date;
-        this.begin = begin;
-        this.end = end;
-        this.description = description;
-        this.remarks = remarks;
-        this.nurseSurname = nurseSurname;
-        this.nurseFirstname = nurseFirstname;
-        this.nursePhonenumber = nursePhonenumber;
-        this.locked = locked;
-    }
+	public long getPid() {
+		return this.pid;
+	}
 
-    /**
-     * Constructor to initiate an object of class <code>Treatment</code> with the given parameter. Use this constructor
-     * to initiate objects, which are already persisted and have a treatment id (tid).
-     *
-     * @param tid Id of the treatment.
-     * @param pid Id of the treated patient.
-     * @param date Date of the Treatment.
-     * @param begin Time of the start of the treatment in format "hh:MM"
-     * @param end Time of the end of the treatment in format "hh:MM".
-     * @param description Description of the treatment.
-     * @param remarks Remarks to the treatment.
-     */
-    public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks, String nurseSurname, String nurseFirstname, String nursePhonenumber, String locked) {
-        this.tid = tid;
-        this.pid = pid;
-        this.date = date;
-        this.begin = begin;
-        this.end = end;
-        this.description = description;
-        this.remarks = remarks;
-        this.nurseSurname = nurseSurname;
-        this.nurseFirstname = nurseFirstname;
-        this.nursePhonenumber = nursePhonenumber;
-        this.locked = locked;
-    }
+	public String getDate() {
+		return date.toString();
+	}
 
-    public long getTid() {
-        return tid;
-    }
+	public String getBegin() {
+		return begin.toString();
+	}
 
-    public long getPid() {
-        return this.pid;
-    }
+	public String getEnd() {
+		return end.toString();
+	}
 
-    public String getDate() {
-        return date.toString();
-    }
+	public void setDate(String date) {
+		this.date = DateConverter.convertStringToLocalDate(date);
+	}
 
-    public String getBegin() {
-        return begin.toString();
-    }
+	public void setBegin(String begin) {
+		this.begin = DateConverter.convertStringToLocalTime(begin);
+		;
+	}
 
-    public String getEnd() {
-        return end.toString();
-    }
+	public void setEnd(String end) {
+		this.end = DateConverter.convertStringToLocalTime(end);
+		;
+	}
 
-    public void setDate(String date) {
-        this.date = DateConverter.convertStringToLocalDate(date);
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setBegin(String begin) {
-        this.begin = DateConverter.convertStringToLocalTime(begin);;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setEnd(String end) {
-        this.end = DateConverter.convertStringToLocalTime(end);;
-    }
+	public String getRemarks() {
+		return remarks;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public String getNurseSurname() {
+		return nurseSurname;
+	}
 
-    public String getRemarks() {
-        return remarks;
-    }
+	public void setNurseSurname(String nurseSurname) {
+		this.nurseSurname = nurseSurname;
+	}
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-    public String getNurseSurname() {
-        return nurseSurname;
-    }
+	public String getNurseFirstname() {
+		return nurseFirstname;
+	}
 
-    public void setNurseSurname(String nurseSurname) {
-        this.nurseSurname = nurseSurname;
-    }
+	public void setNurseFirstname(String nurseFirstname) {
+		this.nurseFirstname = nurseFirstname;
+	}
 
-    public String getNurseFirstname() {
-        return nurseFirstname;
-    }
+	public String getNursePhonenumber() {
+		return nursePhonenumber;
+	}
 
-    public void setNurseFirstname(String nurseFirstname) {
-        this.nurseFirstname = nurseFirstname;
-    }
+	public String getNurseLocked() {
+		return nurseLocked;
+	}
 
-    public String getNursePhonenumber() {
-        return nursePhonenumber;
-    }
+	public void setNurseLocked(String nurseLocked) {
+		this.nurseLocked = nurseLocked;
+	}
 
-    public String getIsLocked() {
-        return locked;
-    }
+	public String getIsLocked() {
+		return locked;
+	}
 
-    public void setIsLocked(String locked) {
-        this.locked = locked;
-    }
+	public void setIsLocked(String locked) {
+		this.locked = locked;
+	}
 
-    public void setNursePhonenumber(String nursePhonenumber) {
-        this.nursePhonenumber = nursePhonenumber;
-    }
-    public String toString() {
-        return "\nBehandlung" + "\nTID: " + this.tid +
-                "\nPID: " + this.pid +
-                "\nDate: " + this.date +
-                "\nBegin: " + this.begin +
-                "\nEnd: " + this.end +
-                "\nDescription: " + this.description +
-                "\nRemarks: " + this.remarks + "\n";
-    }
+	public void setNursePhonenumber(String nursePhonenumber) {
+		this.nursePhonenumber = nursePhonenumber;
+	}
+
+	public String toString() {
+		return "\nBehandlung" + "\nTID: " + this.tid +
+			"\nPID: " + this.pid +
+			"\nDate: " + this.date +
+			"\nBegin: " + this.begin +
+			"\nEnd: " + this.end +
+			"\nDescription: " + this.description +
+			"\nRemarks: " + this.remarks + "\n";
+	}
 }

@@ -69,6 +69,7 @@ public class AllTreatmentController {
         comboBoxPatientSelection.setItems(patientSelection);
         this.createComboBoxData();
         comboBoxPatientSelection.getSelectionModel().select(0);
+
         this.columnId.setCellValueFactory(new PropertyValueFactory<>("tid"));
         this.columnPid.setCellValueFactory(new PropertyValueFactory<>("pid"));
         this.columnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -78,6 +79,7 @@ public class AllTreatmentController {
         this.nurseName.setCellValueFactory(patientSelection ->  Bindings.createStringBinding(() -> patientSelection.getValue().getNurseSurname() + ", " + patientSelection.getValue().getNurseFirstname()));
         this.nursePhone.setCellValueFactory(new PropertyValueFactory<>("nursePhonenumber"));
         this.isLocked.setCellValueFactory(new PropertyValueFactory<>("isLocked"));
+
         this.tableView.setItems(this.treatments);
         this.buttonDelete.setDisable(true);
         this.tableView.getSelectionModel().selectedItemProperty().addListener(
