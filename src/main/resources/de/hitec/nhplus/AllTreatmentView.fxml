@@ -18,8 +18,7 @@
                 <TableColumn fx:id="columnBegin" maxWidth="7500.0" minWidth="100.0" prefWidth="150.0" text="Beginn" />
                 <TableColumn fx:id="columnEnd" maxWidth="7500.0" minWidth="100.0" prefWidth="150.0" text="Ende" />
                 <TableColumn fx:id="columnDescription" maxWidth="7500.0" minWidth="150.0" prefWidth="300.0" text="Kurzbeschreibung" />
-                <TableColumn fx:id="nurseSurname" maxWidth="7500.0" minWidth="150.0" prefWidth="300.0" text="Pflegekraft (Nachname)" />
-                <TableColumn fx:id="nurseFirstname" maxWidth="7500.0" minWidth="150.0" prefWidth="300.0" text="Pflegekraft (Vorname)" />
+                <TableColumn fx:id="nurseName" maxWidth="7500.0" minWidth="150.0" prefWidth="300.0" text="Pflegekraft" />
                 <TableColumn fx:id="nursePhone" maxWidth="7500.0" minWidth="150.0" prefWidth="300.0" text="Telefonnummer" />
             </columns>
             <columnResizePolicy>
