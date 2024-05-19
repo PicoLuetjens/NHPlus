@@ -20,6 +20,7 @@ import de.hitec.nhplus.model.Treatment;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class AllTreatmentController {
 
@@ -89,11 +90,30 @@ public class AllTreatmentController {
                         AllTreatmentController.this.buttonDelete.setDisable(newTreatment == null));
     }
 
+    public void autoDeleteByAge(){
+
+    }
+
+    public void removeByLockedStatus() {
+        Iterator<Treatment> iterator = this.treatments.iterator();
+        while (iterator.hasNext()) {
+            Treatment treatment = iterator.next();
+            if ("true".equals(treatment.getIsLocked())) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public void updateFieldsByNurseLockedStatus(){
+
+    }
+
     public void readAllAndShowInTableView() {
         comboBoxPatientSelection.getSelectionModel().select(0);
         this.dao = DaoFactory.getDaoFactory().createTreatmentDao();
         try {
             this.treatments.setAll(dao.readAll());
+            removeByLockedStatus();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

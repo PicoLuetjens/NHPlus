@@ -97,7 +97,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
     protected PreparedStatement getReadAllStatement() {
         PreparedStatement statement = null;
         try {
-            final String SQL = "SELECT * FROM treatment WHERE IS_LOCKED = 'false'";
+            final String SQL = "SELECT * FROM treatment";
             statement = this.connection.prepareStatement(SQL);
         } catch (SQLException exception) {
             exception.printStackTrace();
