@@ -6,6 +6,7 @@ import de.hitec.nhplus.datastorage.NurseDao;
 import de.hitec.nhplus.datastorage.PatientDao;
 import de.hitec.nhplus.datastorage.TreatmentDao;
 import de.hitec.nhplus.model.Nurse;
+import de.hitec.nhplus.utils.DateConverter;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +22,7 @@ import de.hitec.nhplus.model.Treatment;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -95,7 +97,20 @@ public class AllTreatmentController {
     }
 
     public void autoDeleteByAge(){
+        LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
 
+        Iterator<Treatment> iterator = this.treatments.iterator();
+        while (iterator.hasNext()) {
+            Treatment treatment = iterator.next();
+            if (DateConverter.convertStringToLocalDate(treatment.getDate()).isBefore(tenYearsAgo)){
+                iterator.remove();
+                try {
+                    DaoFactory.getDaoFactory().createTreatmentDao().deleteById(treatment.getTid());
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
     }
 
     public void removeByLockedStatus() {
