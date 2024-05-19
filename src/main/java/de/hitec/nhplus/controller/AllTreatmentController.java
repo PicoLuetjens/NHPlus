@@ -76,7 +76,7 @@ public class AllTreatmentController {
     public void initialize() {
         readAllAndShowInTableView();
         comboBoxPatientSelection.setItems(patientSelection);
-        autoDeleteByAge();
+        this.autoDeleteByAge();
         this.createComboBoxData();
         comboBoxPatientSelection.getSelectionModel().select(0);
         this.columnId.setCellValueFactory(new PropertyValueFactory<>("tid"));

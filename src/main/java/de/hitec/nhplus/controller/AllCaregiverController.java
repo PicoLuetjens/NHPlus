@@ -2,8 +2,10 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.NurseDao;
+import de.hitec.nhplus.datastorage.TreatmentDao;
 import de.hitec.nhplus.model.Nurse;
 import de.hitec.nhplus.model.Treatment;
+import de.hitec.nhplus.utils.DateConverter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -17,7 +19,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -68,7 +72,7 @@ public class AllCaregiverController {
 	 */
 	public void initialize() {
 		this.readAllAndShowInTableView();
-
+		this.autoDeleteByAge();
 		this.colID.setCellValueFactory(new PropertyValueFactory<>("nid"));
 
 		// CellValueFactory to show property values in TableView
@@ -92,7 +96,6 @@ public class AllCaregiverController {
 		this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Nurse>() {
 			@Override
 			public void changed(ObservableValue<? extends Nurse> observableValue, Nurse oldNurse, Nurse newNurse) {
-				;
 				AllCaregiverController.this.buttonDelete.setDisable(newNurse == null);
 			}
 		});
@@ -103,7 +106,35 @@ public class AllCaregiverController {
 		this.textFieldSurname.textProperty().addListener(inputNewNurseListener);
 		this.textFieldFirstName.textProperty().addListener(inputNewNurseListener);
 		this.textFieldTelephone.textProperty().addListener(inputNewNurseListener);
-		//this.textFieldIsLocked.textProperty().addListener(inputNewNurseListener);
+	}
+
+	public void autoDeleteByAge(){
+		try {
+			LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
+			TreatmentDao tdao = DaoFactory.getDaoFactory().createTreatmentDao();
+			List<Treatment> treatments = tdao.readAll();
+			Iterator<Nurse> iterator = this.nurses.iterator();
+			System.out.println("treatments size: " + treatments.size());
+			System.out.println("nurses size: " + nurses.size());
+			while (iterator.hasNext()) {
+				Nurse nurse = iterator.next();
+				Iterator<Treatment> iterator2 = treatments.iterator();
+				System.out.println("in outer");
+				while (iterator2.hasNext()){
+					Treatment treatment = iterator2.next();
+					System.out.println("in inner");
+					if(DateConverter.convertStringToLocalDate(treatment.getDate()).isBefore(tenYearsAgo) && treatment.getNid() == nurse.getNid()){
+						iterator2.remove();
+						iterator.remove();
+						DaoFactory.getDaoFactory().createTreatmentDao().deleteById(treatment.getTid());
+						DaoFactory.getDaoFactory().createNurseDAO().deleteById(nurse.getNid());
+						break;
+					}
+				}
+			}
+		} catch (SQLException exception){
+			exception.printStackTrace();
+		}
 	}
 
 	public void removeByLockedStatus() {
