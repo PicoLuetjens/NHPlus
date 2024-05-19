@@ -155,8 +155,8 @@ public class AllCaregiverController {
 			event.getRowValue().setLocked(event.getNewValue());
 		} else {
 			event.getRowValue().setLocked(oldValue);
-			this.tableView.refresh();
 		}
+		this.tableView.refresh();
 		this.doUpdate(event);
 	}
 

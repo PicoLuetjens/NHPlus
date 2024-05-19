@@ -28,11 +28,11 @@ public class SetUpDB {
         Connection connection = ConnectionBuilder.getConnection();
         SetUpDB.wipeDb(connection);
         SetUpDB.setUpTablePatient(connection);
-        SetUpDB.setUpTableTreatment(connection);
         SetUpDB.setUpTableNurse(connection);
+        SetUpDB.setUpTableTreatment(connection);
         SetUpDB.setUpPatients();
-        SetUpDB.setUpTreatments();
         SetUpDB.setUpNurses();
+        SetUpDB.setUpTreatments();
     }
 
     /**
@@ -69,6 +69,7 @@ public class SetUpDB {
         final String SQL = "CREATE TABLE IF NOT EXISTS treatment (" +
                 "   tid INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "   pid INTEGER NOT NULL, " +
+                "   nid INTEGER NOT NULL, " +
                 "   treatment_date TEXT NOT NULL, " +
                 "   begin TEXT NOT NULL, " +
                 "   end TEXT NOT NULL, " +
@@ -78,7 +79,8 @@ public class SetUpDB {
                 "   nurseFirstname TEXT NOT NULL," +
                 "   nursePhonenumber TEXT NOT NULL," +
                 "   IS_LOCKED TEXT NOT NULL," +
-                "   FOREIGN KEY (pid) REFERENCES patient (pid) ON DELETE CASCADE " +
+                "   FOREIGN KEY (pid) REFERENCES patient (pid) ON DELETE CASCADE, " +
+                "   FOREIGN KEY (nid) REFERENCES nurse (nid) ON DELETE CASCADE " +
                 ");";
 
         try (Statement statement = connection.createStatement()) {
@@ -133,7 +135,7 @@ public class SetUpDB {
                             "0421 1234567",
                     "false"));
             dao.create(new Treatment(2,
-                    1,
+                    1,1,
                     convertStringToLocalDate("2023-06-05"),
                     convertStringToLocalTime("11:00"),
                     convertStringToLocalTime("12:30"),
@@ -144,7 +146,7 @@ public class SetUpDB {
                     "0421 1234567",
                     "false"));
             dao.create(new Treatment(3,
-                    2,
+                    2,1,
                     convertStringToLocalDate("2023-06-04"),
                     convertStringToLocalTime("07:30"),
                     convertStringToLocalTime("08:00"),
@@ -155,7 +157,7 @@ public class SetUpDB {
                     "0421 7654321",
                     "false"));
             dao.create(new Treatment(4,
-                    1,
+                    1,2,
                     convertStringToLocalDate("2023-06-06"),
                     convertStringToLocalTime("15:10"),
                     convertStringToLocalTime("16:00"),
@@ -166,7 +168,7 @@ public class SetUpDB {
                     "0421 7654321",
                     "false"));
             dao.create(new Treatment(8,
-                    1,
+                    1,2,
                     convertStringToLocalDate("2023-06-08"),
                     convertStringToLocalTime("15:00"),
                     convertStringToLocalTime("16:00"),
@@ -177,7 +179,7 @@ public class SetUpDB {
                     "0421 7654321",
                     "false"));
             dao.create(new Treatment(9,
-                    2,
+                    2,3,
                     convertStringToLocalDate("2023-06-07"),
                     convertStringToLocalTime("11:00"),
                     convertStringToLocalTime("11:30"),
@@ -188,7 +190,7 @@ public class SetUpDB {
                     "0421 8765432",
                     "false"));
             dao.create(new Treatment(12,
-                    5,
+                    5,3,
                     convertStringToLocalDate("2023-06-08"),
                     convertStringToLocalTime("15:00"),
                     convertStringToLocalTime("15:30"),
@@ -198,9 +200,9 @@ public class SetUpDB {
                     "Klaus",
                     "0421 8765432",
                     "false"));
-            dao.create(new Treatment(14, 4, convertStringToLocalDate("2023-08-24"), convertStringToLocalTime("09:30"), convertStringToLocalTime("10:15"), "KG", "Lympfdrainage", "Wagner", "Klaus", "0421 8765432", "false"));
+            dao.create(new Treatment(14, 4, 4,convertStringToLocalDate("2023-08-24"), convertStringToLocalTime("09:30"), convertStringToLocalTime("10:15"), "KG", "Lympfdrainage", "Wagner", "Klaus", "0421 8765432", "false"));
             dao.create(new Treatment(16,
-                    6,
+                    6,5,
                     convertStringToLocalDate("2023-08-31"),
                     convertStringToLocalTime("13:30"),
                     convertStringToLocalTime("13:45"),
@@ -211,7 +213,7 @@ public class SetUpDB {
                     "0421 9876543",
                     "false"));
             dao.create(new Treatment(17,
-                    6,
+                    6,6,
                     convertStringToLocalDate("2023-09-01"),
                     convertStringToLocalTime("16:00"),
                     convertStringToLocalTime("17:00"),
