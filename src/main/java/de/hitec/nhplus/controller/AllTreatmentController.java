@@ -33,6 +33,9 @@ public class AllTreatmentController {
     private TableColumn<Treatment, Integer> columnPid;
 
     @FXML
+    private TableColumn<Treatment, String> columnNid;
+
+    @FXML
     private TableColumn<Treatment, String> columnDate;
 
     @FXML
@@ -71,6 +74,7 @@ public class AllTreatmentController {
         comboBoxPatientSelection.getSelectionModel().select(0);
         this.columnId.setCellValueFactory(new PropertyValueFactory<>("tid"));
         this.columnPid.setCellValueFactory(new PropertyValueFactory<>("pid"));
+        this.columnNid.setCellValueFactory(new PropertyValueFactory<>("nid"));
         this.columnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         this.columnBegin.setCellValueFactory(new PropertyValueFactory<>("begin"));
         this.columnEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
