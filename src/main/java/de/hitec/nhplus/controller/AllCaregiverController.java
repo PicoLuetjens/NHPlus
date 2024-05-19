@@ -3,6 +3,7 @@ package de.hitec.nhplus.controller;
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.NurseDao;
 import de.hitec.nhplus.model.Nurse;
+import de.hitec.nhplus.model.Treatment;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -16,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.regex.Pattern;
 
 /**

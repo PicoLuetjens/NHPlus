@@ -2,8 +2,10 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.Main;
 import de.hitec.nhplus.datastorage.DaoFactory;
+import de.hitec.nhplus.datastorage.NurseDao;
 import de.hitec.nhplus.datastorage.PatientDao;
 import de.hitec.nhplus.datastorage.TreatmentDao;
+import de.hitec.nhplus.model.Nurse;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class AllTreatmentController {
 
@@ -71,6 +74,7 @@ public class AllTreatmentController {
     public void initialize() {
         readAllAndShowInTableView();
         comboBoxPatientSelection.setItems(patientSelection);
+        autoDeleteByAge();
         this.createComboBoxData();
         comboBoxPatientSelection.getSelectionModel().select(0);
         this.columnId.setCellValueFactory(new PropertyValueFactory<>("tid"));
@@ -105,7 +109,22 @@ public class AllTreatmentController {
     }
 
     public void updateFieldsByNurseLockedStatus(){
+        try {
+            NurseDao ndao = DaoFactory.getDaoFactory().createNurseDAO();
+            List<Nurse> nurses = ndao.readAll();
 
+            for(Treatment treatment : this.treatments){
+                for(Nurse nurse : nurses){
+                    if(treatment.getNid() == nurse.getNid() && "true".equals(nurse.isLocked())){
+                        treatment.setNurseFirstname("gesperrt");
+                        treatment.setNurseSurname("gesperrt");
+                        treatment.setNursePhonenumber("gesperrt");
+                    }
+                }
+            }
+        } catch (SQLException exception){
+            exception.printStackTrace();
+        }
     }
 
     public void readAllAndShowInTableView() {
@@ -114,6 +133,7 @@ public class AllTreatmentController {
         try {
             this.treatments.setAll(dao.readAll());
             removeByLockedStatus();
+            updateFieldsByNurseLockedStatus();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
