@@ -106,6 +106,16 @@ public class AllCaregiverController {
 		//this.textFieldIsLocked.textProperty().addListener(inputNewNurseListener);
 	}
 
+	public void removeByLockedStatus() {
+		Iterator<Nurse> iterator = this.nurses.iterator();
+		while (iterator.hasNext()) {
+			Nurse nurse = iterator.next();
+			if ("true".equals(nurse.isLocked())) {
+				iterator.remove();
+			}
+		}
+	}
+
 	/**
 	 * When a cell of the column with first names was changed, this method will be called, to persist the change.
 	 *
@@ -184,6 +194,7 @@ public class AllCaregiverController {
 		this.dao = DaoFactory.getDaoFactory().createNurseDAO();
 		try {
 			this.nurses.addAll(this.dao.readAll());
+			this.removeByLockedStatus();
 		} catch (SQLException exception) {
 			exception.printStackTrace();
 		}

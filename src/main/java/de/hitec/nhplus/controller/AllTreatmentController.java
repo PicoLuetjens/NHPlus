@@ -132,8 +132,8 @@ public class AllTreatmentController {
         this.dao = DaoFactory.getDaoFactory().createTreatmentDao();
         try {
             this.treatments.setAll(dao.readAll());
-            removeByLockedStatus();
-            updateFieldsByNurseLockedStatus();
+            this.removeByLockedStatus();
+            this.updateFieldsByNurseLockedStatus();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
