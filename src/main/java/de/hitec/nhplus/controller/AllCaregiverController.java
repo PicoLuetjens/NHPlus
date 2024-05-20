@@ -117,18 +117,13 @@ public class AllCaregiverController {
 			List<Treatment> treatments = tdao.readAll();
 			List<Nurse> nurses = ndao.readAll();
 
-			System.out.println("treatments size: " + treatments.size());
-			System.out.println("nurses size: " + nurses.size());
-
 			// Lists to store treatments and nurses to be deleted
 			List<Treatment> treatmentsToDelete = new ArrayList<>();
 			List<Nurse> nursesToDelete = new ArrayList<>();
 
 			for (Nurse nurse : nurses) {
-				System.out.println("in outer");
 				boolean hasYoungerAssignments = false;
 				for (Treatment treatment : treatments) {
-					System.out.println("in inner");
 					if (treatment.getNid() == nurse.getNid()) {
 						if(DateConverter.convertStringToLocalDate(treatment.getDate()).isBefore(tenYearsAgo)){
 							treatmentsToDelete.add(treatment);
@@ -142,9 +137,6 @@ public class AllCaregiverController {
 					nursesToDelete.add(nurse);
 				}
 			}
-
-			System.out.println("remove nurses size: " + nursesToDelete.size());
-			System.out.println("remove treatments size: " + treatmentsToDelete.size());
 
 			// Remove the collected treatments and nurses
 			for (Treatment treatment : treatmentsToDelete) {
