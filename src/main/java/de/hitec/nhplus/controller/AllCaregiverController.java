@@ -20,6 +20,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -112,29 +113,54 @@ public class AllCaregiverController {
 		try {
 			LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
 			TreatmentDao tdao = DaoFactory.getDaoFactory().createTreatmentDao();
+			NurseDao ndao = DaoFactory.getDaoFactory().createNurseDAO();
 			List<Treatment> treatments = tdao.readAll();
-			Iterator<Nurse> iterator = this.nurses.iterator();
+			List<Nurse> nurses = ndao.readAll();
+
 			System.out.println("treatments size: " + treatments.size());
 			System.out.println("nurses size: " + nurses.size());
-			while (iterator.hasNext()) {
-				Nurse nurse = iterator.next();
-				Iterator<Treatment> iterator2 = treatments.iterator();
+
+			// Lists to store treatments and nurses to be deleted
+			List<Treatment> treatmentsToDelete = new ArrayList<>();
+			List<Nurse> nursesToDelete = new ArrayList<>();
+
+			for (Nurse nurse : nurses) {
 				System.out.println("in outer");
-				while (iterator2.hasNext()){
-					Treatment treatment = iterator2.next();
+				boolean hasYoungerAssignments = false;
+				for (Treatment treatment : treatments) {
 					System.out.println("in inner");
-					if(DateConverter.convertStringToLocalDate(treatment.getDate()).isBefore(tenYearsAgo) && treatment.getNid() == nurse.getNid()){
-						iterator2.remove();
-						iterator.remove();
-						DaoFactory.getDaoFactory().createTreatmentDao().deleteById(treatment.getTid());
-						DaoFactory.getDaoFactory().createNurseDAO().deleteById(nurse.getNid());
-						break;
+					if (treatment.getNid() == nurse.getNid()) {
+						if(DateConverter.convertStringToLocalDate(treatment.getDate()).isBefore(tenYearsAgo)){
+							treatmentsToDelete.add(treatment);
+						}
+						else{
+							hasYoungerAssignments = true;
+						}
 					}
 				}
+				if (!hasYoungerAssignments) {
+					nursesToDelete.add(nurse);
+				}
 			}
-		} catch (SQLException exception){
+
+			System.out.println("remove nurses size: " + nursesToDelete.size());
+			System.out.println("remove treatments size: " + treatmentsToDelete.size());
+
+			// Remove the collected treatments and nurses
+			for (Treatment treatment : treatmentsToDelete) {
+				treatments.remove(treatment);
+				tdao.deleteById(treatment.getTid());
+			}
+
+			for (Nurse nurse : nursesToDelete) {
+				nurses.remove(nurse);
+				ndao.deleteById(nurse.getNid());
+			}
+
+		} catch (SQLException exception) {
 			exception.printStackTrace();
 		}
+
 	}
 
 	public void removeByLockedStatus() {
