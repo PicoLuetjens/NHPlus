@@ -8,6 +8,7 @@ import java.time.LocalTime;
 public class Treatment {
     private long tid;
     private final long pid;
+    private final long nid;
     private LocalDate date;
     private LocalTime begin;
     private LocalTime end;
@@ -33,9 +34,10 @@ public class Treatment {
      * @param description Description of the treatment.
      * @param remarks Remarks to the treatment.
      */
-    public Treatment(long pid, LocalDate date, LocalTime begin,
+    public Treatment(long pid, long nid, LocalDate date, LocalTime begin,
                      LocalTime end, String description, String remarks, String nurseSurname, String nurseFirstname, String nursePhonenumber, String locked) {
         this.pid = pid;
+        this.nid = nid;
         this.date = date;
         this.begin = begin;
         this.end = end;
@@ -59,10 +61,11 @@ public class Treatment {
      * @param description Description of the treatment.
      * @param remarks Remarks to the treatment.
      */
-    public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
+    public Treatment(long tid, long pid, long nid, LocalDate date, LocalTime begin,
                      LocalTime end, String description, String remarks, String nurseSurname, String nurseFirstname, String nursePhonenumber, String locked) {
         this.tid = tid;
         this.pid = pid;
+        this.nid = nid;
         this.date = date;
         this.begin = begin;
         this.end = end;
@@ -80,6 +83,10 @@ public class Treatment {
 
     public long getPid() {
         return this.pid;
+    }
+
+    public long getNid() {
+        return this.nid;
     }
 
     public String getDate() {

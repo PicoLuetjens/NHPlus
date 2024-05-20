@@ -2,7 +2,10 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.NurseDao;
+import de.hitec.nhplus.datastorage.TreatmentDao;
 import de.hitec.nhplus.model.Nurse;
+import de.hitec.nhplus.model.Treatment;
+import de.hitec.nhplus.utils.DateConverter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -16,6 +19,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -66,7 +73,7 @@ public class AllCaregiverController {
 	 */
 	public void initialize() {
 		this.readAllAndShowInTableView();
-
+		this.autoDeleteByAge();
 		this.colID.setCellValueFactory(new PropertyValueFactory<>("nid"));
 
 		// CellValueFactory to show property values in TableView
@@ -90,7 +97,6 @@ public class AllCaregiverController {
 		this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Nurse>() {
 			@Override
 			public void changed(ObservableValue<? extends Nurse> observableValue, Nurse oldNurse, Nurse newNurse) {
-				;
 				AllCaregiverController.this.buttonDelete.setDisable(newNurse == null);
 			}
 		});
@@ -101,7 +107,62 @@ public class AllCaregiverController {
 		this.textFieldSurname.textProperty().addListener(inputNewNurseListener);
 		this.textFieldFirstName.textProperty().addListener(inputNewNurseListener);
 		this.textFieldTelephone.textProperty().addListener(inputNewNurseListener);
-		//this.textFieldIsLocked.textProperty().addListener(inputNewNurseListener);
+	}
+
+	public void autoDeleteByAge(){
+		try {
+			LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
+			TreatmentDao tdao = DaoFactory.getDaoFactory().createTreatmentDao();
+			NurseDao ndao = DaoFactory.getDaoFactory().createNurseDAO();
+			List<Treatment> treatments = tdao.readAll();
+			List<Nurse> nurses = ndao.readAll();
+
+			// Lists to store treatments and nurses to be deleted
+			List<Treatment> treatmentsToDelete = new ArrayList<>();
+			List<Nurse> nursesToDelete = new ArrayList<>();
+
+			for (Nurse nurse : nurses) {
+				boolean hasYoungerAssignments = false;
+				for (Treatment treatment : treatments) {
+					if (treatment.getNid() == nurse.getNid()) {
+						if(DateConverter.convertStringToLocalDate(treatment.getDate()).isBefore(tenYearsAgo)){
+							treatmentsToDelete.add(treatment);
+						}
+						else{
+							hasYoungerAssignments = true;
+						}
+					}
+				}
+				if (!hasYoungerAssignments) {
+					nursesToDelete.add(nurse);
+				}
+			}
+
+			// Remove the collected treatments and nurses
+			for (Treatment treatment : treatmentsToDelete) {
+				treatments.remove(treatment);
+				tdao.deleteById(treatment.getTid());
+			}
+
+			for (Nurse nurse : nursesToDelete) {
+				nurses.remove(nurse);
+				ndao.deleteById(nurse.getNid());
+			}
+
+		} catch (SQLException exception) {
+			exception.printStackTrace();
+		}
+
+	}
+
+	public void removeByLockedStatus() {
+		Iterator<Nurse> iterator = this.nurses.iterator();
+		while (iterator.hasNext()) {
+			Nurse nurse = iterator.next();
+			if ("true".equals(nurse.isLocked())) {
+				iterator.remove();
+			}
+		}
 	}
 
 	/**
@@ -155,8 +216,8 @@ public class AllCaregiverController {
 			event.getRowValue().setLocked(event.getNewValue());
 		} else {
 			event.getRowValue().setLocked(oldValue);
-			this.tableView.refresh();
 		}
+		this.tableView.refresh();
 		this.doUpdate(event);
 	}
 
@@ -182,6 +243,7 @@ public class AllCaregiverController {
 		this.dao = DaoFactory.getDaoFactory().createNurseDAO();
 		try {
 			this.nurses.addAll(this.dao.readAll());
+			this.removeByLockedStatus();
 		} catch (SQLException exception) {
 			exception.printStackTrace();
 		}

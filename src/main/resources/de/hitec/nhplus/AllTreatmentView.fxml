@@ -14,6 +14,7 @@
             <columns>
                 <TableColumn fx:id="columnId" maxWidth="1200.0" minWidth="40.0" prefWidth="50.0" text="ID" />
                 <TableColumn fx:id="columnPid" maxWidth="7500.0" minWidth="80.0" prefWidth="120.0" text="PatientID" />
+                <TableColumn fx:id="columnNid" maxWidth="7500.0" minWidth="80.0" prefWidth="120.0" text="PflegerID"/>
                 <TableColumn fx:id="columnDate" maxWidth="7500.0" minWidth="140.0" prefWidth="150.0" text="Datum" />
                 <TableColumn fx:id="columnBegin" maxWidth="7500.0" minWidth="100.0" prefWidth="150.0" text="Beginn" />
                 <TableColumn fx:id="columnEnd" maxWidth="7500.0" minWidth="100.0" prefWidth="150.0" text="Ende" />

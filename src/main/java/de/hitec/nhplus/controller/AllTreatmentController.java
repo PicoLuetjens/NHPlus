@@ -2,8 +2,11 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.Main;
 import de.hitec.nhplus.datastorage.DaoFactory;
+import de.hitec.nhplus.datastorage.NurseDao;
 import de.hitec.nhplus.datastorage.PatientDao;
 import de.hitec.nhplus.datastorage.TreatmentDao;
+import de.hitec.nhplus.model.Nurse;
+import de.hitec.nhplus.utils.DateConverter;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +22,10 @@ import de.hitec.nhplus.model.Treatment;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class AllTreatmentController {
 
@@ -31,6 +37,9 @@ public class AllTreatmentController {
 
     @FXML
     private TableColumn<Treatment, Integer> columnPid;
+
+    @FXML
+    private TableColumn<Treatment, String> columnNid;
 
     @FXML
     private TableColumn<Treatment, String> columnDate;
@@ -67,10 +76,12 @@ public class AllTreatmentController {
     public void initialize() {
         readAllAndShowInTableView();
         comboBoxPatientSelection.setItems(patientSelection);
+        this.autoDeleteByAge();
         this.createComboBoxData();
         comboBoxPatientSelection.getSelectionModel().select(0);
         this.columnId.setCellValueFactory(new PropertyValueFactory<>("tid"));
         this.columnPid.setCellValueFactory(new PropertyValueFactory<>("pid"));
+        this.columnNid.setCellValueFactory(new PropertyValueFactory<>("nid"));
         this.columnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         this.columnBegin.setCellValueFactory(new PropertyValueFactory<>("begin"));
         this.columnEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
@@ -85,11 +96,59 @@ public class AllTreatmentController {
                         AllTreatmentController.this.buttonDelete.setDisable(newTreatment == null));
     }
 
+    public void autoDeleteByAge(){
+        LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
+
+        Iterator<Treatment> iterator = this.treatments.iterator();
+        while (iterator.hasNext()) {
+            Treatment treatment = iterator.next();
+            if (DateConverter.convertStringToLocalDate(treatment.getDate()).isBefore(tenYearsAgo)){
+                iterator.remove();
+                try {
+                    DaoFactory.getDaoFactory().createTreatmentDao().deleteById(treatment.getTid());
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void removeByLockedStatus() {
+        Iterator<Treatment> iterator = this.treatments.iterator();
+        while (iterator.hasNext()) {
+            Treatment treatment = iterator.next();
+            if ("true".equals(treatment.getIsLocked())) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public void updateFieldsByNurseLockedStatus(){
+        try {
+            NurseDao ndao = DaoFactory.getDaoFactory().createNurseDAO();
+            List<Nurse> nurses = ndao.readAll();
+
+            for(Treatment treatment : this.treatments){
+                for(Nurse nurse : nurses){
+                    if(treatment.getNid() == nurse.getNid() && "true".equals(nurse.isLocked())){
+                        treatment.setNurseFirstname("gesperrt");
+                        treatment.setNurseSurname("gesperrt");
+                        treatment.setNursePhonenumber("gesperrt");
+                    }
+                }
+            }
+        } catch (SQLException exception){
+            exception.printStackTrace();
+        }
+    }
+
     public void readAllAndShowInTableView() {
         comboBoxPatientSelection.getSelectionModel().select(0);
         this.dao = DaoFactory.getDaoFactory().createTreatmentDao();
         try {
             this.treatments.setAll(dao.readAll());
+            this.removeByLockedStatus();
+            this.updateFieldsByNurseLockedStatus();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

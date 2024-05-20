@@ -103,7 +103,7 @@ public class NewTreatmentController {
 		String remarks = textAreaRemarks.getText();
 		String selectedNurse = this.comboBoxNurseSelection.getSelectionModel().getSelectedItem();
 		Nurse nurse = searchInList(selectedNurse);
-		Treatment treatment = new Treatment(patient.getPid(), date, begin, end, description, remarks, nurse.getSurname(), nurse.getFirstName(), nurse.getPhoneNumber(), "false");
+		Treatment treatment = new Treatment(patient.getPid(), nurse.getNid(), date, begin, end, description, remarks, nurse.getSurname(), nurse.getFirstName(), nurse.getPhoneNumber(), "false");
 		createTreatment(treatment);
 		controller.readAllAndShowInTableView();
 		stage.close();
