@@ -77,6 +77,9 @@ public class TreatmentController {
         this.textFieldDescription.setText(this.treatment.getDescription());
         this.textAreaRemarks.setText(this.treatment.getRemarks());
         this.textfieldLocked.setText(this.treatment.getIsLocked());
+        if(!MainWindowController.IS_ADMIN) {
+            this.textfieldLocked.setEditable(false);
+        }
     }
 
     @FXML

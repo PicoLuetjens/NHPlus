@@ -25,6 +25,8 @@ public class LoginFormController {
 	private Stage bufferStage;
 	private static final String CORRECT_USERNAME = "test";
 	private static final String CORRECT_PASSWORD = "pass123";
+	private static final String CORRECT_ADMIN_USERNAME = "admin";
+	private static final String CORRECT_ADMIN_PASSWORD = "admin123";
 
 	public void initialize() {
 	}
@@ -41,13 +43,23 @@ public class LoginFormController {
 
 		String enteredUsername = user.getText();
 		String enteredPassword = password.getText();
-		if (enteredUsername.equals(CORRECT_USERNAME) && enteredPassword.equals(CORRECT_PASSWORD)) {
+		if(CORRECT_USERNAME.equals(enteredUsername) && CORRECT_PASSWORD.equals(enteredPassword)){
+			MainWindowController.IS_ADMIN = false;
 			responseLabel.setText("Login successful!");
 			Stage stage = new Stage();
 			MainWindow window = new MainWindow();
 			LoginForm.closeStage();
 			window.start(stage);
-		} else {
+		}
+		else if(CORRECT_ADMIN_USERNAME.equals(enteredUsername) && CORRECT_ADMIN_PASSWORD.equals(enteredPassword)){
+			MainWindowController.IS_ADMIN = true;
+			responseLabel.setText("Admin Login successful!");
+			Stage stage = new Stage();
+			MainWindow window = new MainWindow();
+			LoginForm.closeStage();
+			window.start(stage);
+		}
+		else {
 			responseLabel.setText("Login Failed");
 		}
 	}

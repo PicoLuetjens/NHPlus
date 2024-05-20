@@ -11,6 +11,8 @@ import java.io.IOException;
 
 public class MainWindowController {
 
+    public static boolean IS_ADMIN = false;
+
     @FXML
     private BorderPane mainBorderPane;
 
