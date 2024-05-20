@@ -89,6 +89,9 @@ public class AllTreatmentController {
         this.nurseName.setCellValueFactory(patientSelection ->  Bindings.createStringBinding(() -> patientSelection.getValue().getNurseSurname() + ", " + patientSelection.getValue().getNurseFirstname()));
         this.nursePhone.setCellValueFactory(new PropertyValueFactory<>("nursePhonenumber"));
         this.isLocked.setCellValueFactory(new PropertyValueFactory<>("isLocked"));
+        if(!MainWindowController.IS_ADMIN){
+            this.isLocked.setVisible(false);
+        }
         this.tableView.setItems(this.treatments);
         this.buttonDelete.setDisable(true);
         this.tableView.getSelectionModel().selectedItemProperty().addListener(
@@ -147,7 +150,9 @@ public class AllTreatmentController {
         this.dao = DaoFactory.getDaoFactory().createTreatmentDao();
         try {
             this.treatments.setAll(dao.readAll());
-            this.removeByLockedStatus();
+            if(!MainWindowController.IS_ADMIN) {
+                this.removeByLockedStatus();
+            }
             this.updateFieldsByNurseLockedStatus();
         } catch (SQLException exception) {
             exception.printStackTrace();

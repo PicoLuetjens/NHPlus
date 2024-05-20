@@ -89,6 +89,9 @@ public class AllCaregiverController {
 
 		this.islocked.setCellValueFactory(new PropertyValueFactory<>("locked"));
 		this.islocked.setCellFactory(TextFieldTableCell.forTableColumn());
+		if(!MainWindowController.IS_ADMIN) {
+			this.islocked.setVisible(false);
+		}
 
 		//Anzeigen der Daten
 		this.tableView.setItems(this.nurses);
@@ -243,7 +246,9 @@ public class AllCaregiverController {
 		this.dao = DaoFactory.getDaoFactory().createNurseDAO();
 		try {
 			this.nurses.addAll(this.dao.readAll());
-			this.removeByLockedStatus();
+			if(!MainWindowController.IS_ADMIN) {
+				this.removeByLockedStatus();
+			}
 		} catch (SQLException exception) {
 			exception.printStackTrace();
 		}
