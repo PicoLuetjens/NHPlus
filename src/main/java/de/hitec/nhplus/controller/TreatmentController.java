@@ -100,11 +100,36 @@ public class TreatmentController {
         }
     }
 
+    private boolean validateTimeFormat(String time) {
+        try {
+            String[] splits = time.split(":");
+            if (splits.length != 2) {
+                return false;
+            }
+
+            if (splits[0].length() != 2 || splits[1].length() != 2) {
+                return false;
+            }
+
+            int hours = Integer.parseInt(splits[0]);
+            int minutes = Integer.parseInt(splits[1]);
+
+            if (hours < 0 || hours > 23) {
+                return false;
+            }
+            if (minutes < 0 || minutes > 59) {
+                return false;
+            }
+
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     @FXML
     public void handleChange(){
         this.treatment.setDate(this.datePicker.getValue().toString());
-        this.treatment.setBegin(textFieldBegin.getText());
-        this.treatment.setEnd(textFieldEnd.getText());
         this.treatment.setDescription(textFieldDescription.getText());
         this.treatment.setRemarks(textAreaRemarks.getText());
 
@@ -114,13 +139,20 @@ public class TreatmentController {
             this.removeErrorStyle(this.textfieldLocked);
         }
         else{
-            System.out.println("in");
             this.applyErrorStyle(this.textfieldLocked);
             return;
         }
 
-        if(this.validateTime()){
-
+        if(this.validateTimeFormat(this.textFieldBegin.getText()) && this.validateTimeFormat(this.textFieldEnd.getText())){
+            this.treatment.setBegin(textFieldBegin.getText());
+            this.treatment.setEnd(textFieldEnd.getText());
+            this.removeErrorStyle(this.textFieldBegin);
+            this.removeErrorStyle(this.textFieldEnd);
+        }
+        else{
+            this.applyErrorStyle(this.textFieldBegin);
+            this.applyErrorStyle(this.textFieldEnd);
+            return;
         }
 
         doUpdate();
