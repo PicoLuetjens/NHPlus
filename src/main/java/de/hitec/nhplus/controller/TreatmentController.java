@@ -82,6 +82,24 @@ public class TreatmentController {
         }
     }
 
+    private void applyErrorStyle(Control control) {
+        if (!control.getStylesheets().contains(getClass().getResource("/de/hitec/nhplus/Error.css").toExternalForm())) {
+            control.getStylesheets().add(getClass().getResource("/de/hitec/nhplus/Error.css").toExternalForm());
+        }
+        if (!control.getStyleClass().contains("error")) {
+            control.getStyleClass().add("error");
+        }
+    }
+
+    private void removeErrorStyle(Control control) {
+        if (!control.getStylesheets().contains(getClass().getResource("/de/hitec/nhplus/Error.css").toExternalForm())) {
+            control.getStylesheets().remove(getClass().getResource("/de/hitec/nhplus/Error.css").toExternalForm());
+        }
+        if (!control.getStyleClass().contains("error")) {
+            control.getStyleClass().remove("error");
+        }
+    }
+
     @FXML
     public void handleChange(){
         this.treatment.setDate(this.datePicker.getValue().toString());
@@ -93,6 +111,16 @@ public class TreatmentController {
         String input = this.textfieldLocked.getText();
         if("true".equals(input) || "false".equals(input)){
             this.treatment.setIsLocked(textfieldLocked.getText());
+            this.removeErrorStyle(this.textfieldLocked);
+        }
+        else{
+            System.out.println("in");
+            this.applyErrorStyle(this.textfieldLocked);
+            return;
+        }
+
+        if(this.validateTime()){
+
         }
 
         doUpdate();
