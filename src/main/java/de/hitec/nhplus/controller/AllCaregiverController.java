@@ -183,7 +183,13 @@ public class AllCaregiverController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        treatments.forEach(treatment -> treatment.setNurseFirstname(event.getNewValue()));
+		treatments.forEach(treatment -> {treatment.setNurseFirstname(event.getNewValue());
+			try {
+				tdao.update(treatment);
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		});
 		this.doUpdate(event);
 	}
 
@@ -202,7 +208,14 @@ public class AllCaregiverController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        treatments.forEach(treatment -> treatment.setNurseSurname(event.getNewValue()));
+
+        treatments.forEach(treatment -> {treatment.setNurseSurname(event.getNewValue());
+			try {
+				tdao.update(treatment);
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		});
 		this.doUpdate(event);
 	}
 
