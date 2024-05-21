@@ -166,6 +166,9 @@ public class Treatment {
                 "\nBegin: " + this.begin +
                 "\nEnd: " + this.end +
                 "\nDescription: " + this.description +
+                "\nNurseFirstname: " + this.nurseFirstname +
+                "\nNurseSurname: " + this.nurseSurname +
+                "\nPhonenumber: " + this.nursePhonenumber +
                 "\nRemarks: " + this.remarks + "\n";
     }
 }
