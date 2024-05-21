@@ -174,8 +174,22 @@ public class AllCaregiverController {
 	 * @param event Event including the changed object and the change.
 	 */
 	@FXML
-	public void handleOnEditFirstname(TableColumn.CellEditEvent<Nurse, String> event) {
+	public void handleOnEditFirstname(TableColumn.CellEditEvent<Nurse, String> event){
 		event.getRowValue().setFirstName(event.getNewValue());
+		TreatmentDao tdao = DaoFactory.getDaoFactory().createTreatmentDao();
+        List<Treatment> treatments = null;
+        try {
+            treatments = tdao.readTreatmentsByNid(event.getRowValue().getNid());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+		treatments.forEach(treatment -> {treatment.setNurseFirstname(event.getNewValue());
+			try {
+				tdao.update(treatment);
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		});
 		this.doUpdate(event);
 	}
 
@@ -185,8 +199,23 @@ public class AllCaregiverController {
 	 * @param event Event including the changed object and the change.
 	 */
 	@FXML
-	public void handleOnEditSurname(TableColumn.CellEditEvent<Nurse, String> event) {
+	public void handleOnEditSurname(TableColumn.CellEditEvent<Nurse, String> event){
 		event.getRowValue().setSurname(event.getNewValue());
+		TreatmentDao tdao = DaoFactory.getDaoFactory().createTreatmentDao();
+        List<Treatment> treatments = null;
+        try {
+            treatments = tdao.readTreatmentsByNid(event.getRowValue().getNid());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        treatments.forEach(treatment -> {treatment.setNurseSurname(event.getNewValue());
+			try {
+				tdao.update(treatment);
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		});
 		this.doUpdate(event);
 	}
 
@@ -196,10 +225,25 @@ public class AllCaregiverController {
 	 * @param event Event including the changed object and the change.
 	 */
 	@FXML
-	public void handleOnEditTelephone(TableColumn.CellEditEvent<Nurse, String> event) {
+	public void handleOnEditTelephone(TableColumn.CellEditEvent<Nurse, String> event){
 		String oldValue = event.getOldValue();
 		if (this.isPhoneNumberValid(event.getNewValue())) {
 			event.getRowValue().setPhoneNumber(event.getNewValue());
+			TreatmentDao tdao = DaoFactory.getDaoFactory().createTreatmentDao();
+            List<Treatment> treatments = null;
+            try {
+                treatments = tdao.readTreatmentsByNid(event.getRowValue().getNid());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            treatments.forEach(treatment -> {treatment.setNursePhonenumber(event.getNewValue());
+                try {
+                    tdao.update(treatment);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
 		} else {
 			event.getRowValue().setPhoneNumber(oldValue);
 			this.tableView.refresh();
