@@ -82,17 +82,78 @@ public class TreatmentController {
         }
     }
 
+    private void applyErrorStyle(Control control) {
+        if (!control.getStylesheets().contains(getClass().getResource("/de/hitec/nhplus/Error.css").toExternalForm())) {
+            control.getStylesheets().add(getClass().getResource("/de/hitec/nhplus/Error.css").toExternalForm());
+        }
+        if (!control.getStyleClass().contains("error")) {
+            control.getStyleClass().add("error");
+        }
+    }
+
+    private void removeErrorStyle(Control control) {
+        if (!control.getStylesheets().contains(getClass().getResource("/de/hitec/nhplus/Error.css").toExternalForm())) {
+            control.getStylesheets().remove(getClass().getResource("/de/hitec/nhplus/Error.css").toExternalForm());
+        }
+        if (!control.getStyleClass().contains("error")) {
+            control.getStyleClass().remove("error");
+        }
+    }
+
+    private boolean validateTimeFormat(String time) {
+        try {
+            String[] splits = time.split(":");
+            if (splits.length != 2) {
+                return false;
+            }
+
+            if (splits[0].length() != 2 || splits[1].length() != 2) {
+                return false;
+            }
+
+            int hours = Integer.parseInt(splits[0]);
+            int minutes = Integer.parseInt(splits[1]);
+
+            if (hours < 0 || hours > 23) {
+                return false;
+            }
+            if (minutes < 0 || minutes > 59) {
+                return false;
+            }
+
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     @FXML
     public void handleChange(){
-        this.treatment.setDate(this.datePicker.getValue().toString());
-        this.treatment.setBegin(textFieldBegin.getText());
-        this.treatment.setEnd(textFieldEnd.getText());
+
         this.treatment.setDescription(textFieldDescription.getText());
         this.treatment.setRemarks(textAreaRemarks.getText());
 
         String input = this.textfieldLocked.getText();
         if("true".equals(input) || "false".equals(input)){
             this.treatment.setIsLocked(textfieldLocked.getText());
+            this.removeErrorStyle(this.textfieldLocked);
+        }
+        else{
+            this.applyErrorStyle(this.textfieldLocked);
+            return;
+        }
+
+        // EDIT BY PICO: YES THEY ARE HIGHLIGHTED ON PURPOSE BOTH AT THE SAME TIME
+        if(this.validateTimeFormat(this.textFieldBegin.getText()) && this.validateTimeFormat(this.textFieldEnd.getText())){
+            this.treatment.setBegin(textFieldBegin.getText());
+            this.treatment.setEnd(textFieldEnd.getText());
+            this.removeErrorStyle(this.textFieldBegin);
+            this.removeErrorStyle(this.textFieldEnd);
+        }
+        else{
+            this.applyErrorStyle(this.textFieldBegin);
+            this.applyErrorStyle(this.textFieldEnd);
+            return;
         }
 
         doUpdate();
