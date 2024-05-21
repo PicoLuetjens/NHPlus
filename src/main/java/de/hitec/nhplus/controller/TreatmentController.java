@@ -129,7 +129,7 @@ public class TreatmentController {
 
     @FXML
     public void handleChange(){
-        this.treatment.setDate(this.datePicker.getValue().toString());
+
         this.treatment.setDescription(textFieldDescription.getText());
         this.treatment.setRemarks(textAreaRemarks.getText());
 
@@ -143,6 +143,7 @@ public class TreatmentController {
             return;
         }
 
+        // EDIT BY PICO: YES THEY ARE HIGHLIGHTED ON PURPOSE BOTH AT THE SAME TIME
         if(this.validateTimeFormat(this.textFieldBegin.getText()) && this.validateTimeFormat(this.textFieldEnd.getText())){
             this.treatment.setBegin(textFieldBegin.getText());
             this.treatment.setEnd(textFieldEnd.getText());
