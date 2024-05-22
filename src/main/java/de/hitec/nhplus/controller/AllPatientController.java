@@ -251,6 +251,10 @@ public class AllPatientController {
         this.textFieldRoomNumber.clear();
     }
 
+    /**
+     * Validates that all Inputfield data is valid.
+     * @return <code>boolean</code> to determine if the given input data is valid.
+     */
     private boolean areInputDataValid() {
         if (!this.textFieldDateOfBirth.getText().isBlank()) {
             try {

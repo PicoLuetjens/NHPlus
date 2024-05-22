@@ -2,6 +2,7 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.application.LoginForm;
 import de.hitec.nhplus.application.MainWindow;
+import de.hitec.nhplus.datastorage.TreatmentDao;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * The <code>LoginFormController</code> contains the entire logic of the LoginFormView. It determines which data is displayed and how to react to events.
+ */
 public class LoginFormController {
 
 	@FXML
@@ -31,6 +35,9 @@ public class LoginFormController {
 	public void initialize() {
 	}
 
+	/**
+	 * Gets executed when the login button is clicked.
+	 */
 	public void clickButton() {
 		ActionEvent event = new ActionEvent();
 		Button loginButton = new Button();
@@ -39,6 +46,10 @@ public class LoginFormController {
 		});
 	}
 
+	/**
+	 * Validates the login data provided.
+	 * @param event The event that triggered the loginbutton.
+	 */
 	public void loginValidation(ActionEvent event) {
 
 		String enteredUsername = user.getText();

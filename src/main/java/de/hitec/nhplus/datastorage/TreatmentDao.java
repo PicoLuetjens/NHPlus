@@ -145,6 +145,12 @@ public class TreatmentDao extends DaoImp<Treatment> {
         return preparedStatement;
     }
 
+    /**
+     * Generates a <code>PreparedStatement</code> to query all treatments of a nurse with a given nurse id (nid).
+     *
+     * @param nid Nurse id to query all treatments referencing this id.
+     * @return <code>PreparedStatement</code> to query all treatments of the given nurse id (nid).
+     */
     private PreparedStatement getReadAllTreatmentsOfOneNurseByNid(long nid) {
         PreparedStatement preparedStatement = null;
         try {

@@ -14,6 +14,9 @@ import de.hitec.nhplus.utils.DateConverter;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * The <code>TreatmentController</code> contains the entire logic of the TreatmentView. It determines which data is displayed and how to react to events.
+ */
 public class TreatmentController {
 
     @FXML
@@ -52,6 +55,11 @@ public class TreatmentController {
     private Treatment treatment;
     private Nurse nurse;
 
+    /**
+     * When <code>initializeController()</code> gets called, all fields are already initialized. For example from the FXMLLoader
+     * after loading an FXML-File. At this point of the lifecycle of the Controller, the fields can be accessed and
+     * configured.
+     */
     public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
         this.stage = stage;
         this.controller= controller;
@@ -65,6 +73,9 @@ public class TreatmentController {
         }
     }
 
+    /**
+     * Shows the data of the treatment to edit.
+     */
     private void showData(){
         this.labelPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
         this.labelCareLevel.setText(patient.getCareLevel());
@@ -82,6 +93,10 @@ public class TreatmentController {
         }
     }
 
+    /**
+     * Applies an error css styling to the object.
+     * @param control The control object that the style is applied to.
+     */
     private void applyErrorStyle(Control control) {
         if (!control.getStylesheets().contains(getClass().getResource("/de/hitec/nhplus/Error.css").toExternalForm())) {
             control.getStylesheets().add(getClass().getResource("/de/hitec/nhplus/Error.css").toExternalForm());
@@ -91,6 +106,10 @@ public class TreatmentController {
         }
     }
 
+    /**
+     * Removes an error css styling to the object.
+     * @param control The control object that the style is removed from.
+     */
     private void removeErrorStyle(Control control) {
         if (!control.getStylesheets().contains(getClass().getResource("/de/hitec/nhplus/Error.css").toExternalForm())) {
             control.getStylesheets().remove(getClass().getResource("/de/hitec/nhplus/Error.css").toExternalForm());
@@ -100,6 +119,11 @@ public class TreatmentController {
         }
     }
 
+    /**
+     * Validates the time format.
+     * @param time The time to validate in string format.
+     * @return <code>boolean</code> to determine if the Format is valid.
+     */
     private boolean validateTimeFormat(String time) {
         try {
             String[] splits = time.split(":");
@@ -127,6 +151,9 @@ public class TreatmentController {
         }
     }
 
+    /**
+     * Handles the editing of a treatment.
+     */
     @FXML
     public void handleChange(){
 
@@ -170,6 +197,9 @@ public class TreatmentController {
         }
     }
 
+    /**
+     * Handles the gui interaction when canceling the window.
+     */
     @FXML
     public void handleCancel(){
         stage.close();

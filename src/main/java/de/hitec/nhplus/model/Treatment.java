@@ -28,6 +28,7 @@ public class Treatment {
      * to initiate objects, which are not persisted yet, because it will not have a treatment id (tid).
      *
      * @param pid Id of the treated patient.
+     * @param nid Id of the nurse.
      * @param date Date of the Treatment.
      * @param begin Time of the start of the treatment in format "hh:MM"
      * @param end Time of the end of the treatment in format "hh:MM".
@@ -55,6 +56,7 @@ public class Treatment {
      *
      * @param tid Id of the treatment.
      * @param pid Id of the treated patient.
+     * @param nid Id of the nurse.
      * @param date Date of the Treatment.
      * @param begin Time of the start of the treatment in format "hh:MM"
      * @param end Time of the end of the treatment in format "hh:MM".

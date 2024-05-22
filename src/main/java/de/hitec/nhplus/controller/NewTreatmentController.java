@@ -23,6 +23,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+/**
+ * The <code>NewTreatmentController</code> contains the entire logic of the NewTreatmentView. It determines which data is displayed and how to react to events.
+ */
 public class NewTreatmentController {
 
 	@FXML
@@ -59,6 +62,11 @@ public class NewTreatmentController {
 	private Nurse nurse;
 	private Stage stage;
 
+	/**
+	 * When <code>initialize()</code> gets called, all fields are already initialized. For example from the FXMLLoader
+	 * after loading an FXML-File. At this point of the lifecycle of the Controller, the fields can be accessed and
+	 * configured.
+	 */
 	public void initialize(AllTreatmentController controller, Stage stage, Patient patient) {
 		this.controller = controller;
 		this.patient = patient;
@@ -89,11 +97,17 @@ public class NewTreatmentController {
 		this.showPatientData();
 	}
 
+	/**
+	 * Reads in the data of the selected patient.
+	 */
 	private void showPatientData() {
 		this.labelFirstName.setText(patient.getFirstName());
 		this.labelSurname.setText(patient.getSurname());
 	}
 
+	/**
+	 * Handles the gui interaction for the creation of a new treatment
+	 */
 	@FXML
 	public void handleAdd() {
 		LocalDate date = this.datePicker.getValue();
@@ -109,6 +123,10 @@ public class NewTreatmentController {
 		stage.close();
 	}
 
+	/**
+	 * Creates the actual treatment via the Dao object.
+	 * @param treatment The treatment that should be created.
+	 */
 	private void createTreatment(Treatment treatment) {
 		TreatmentDao dao = DaoFactory.getDaoFactory().createTreatmentDao();
 		try {
@@ -118,11 +136,18 @@ public class NewTreatmentController {
 		}
 	}
 
+	/**
+	 * Handles the gui interaction when canceling the window.
+	 */
 	@FXML
 	public void handleCancel() {
 		stage.close();
 	}
 
+	/**
+	 * Validates that all Inputfield data is valid.
+	 * @return <code>boolean</code> to determine if the input data is valid.
+	 */
 	private boolean areInputDataInvalid() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		if (this.textFieldBegin.getText() == null || this.textFieldEnd.getText() == null) {
@@ -149,6 +174,9 @@ public class NewTreatmentController {
 		return this.textFieldDescription.getText().isBlank() || this.datePicker.getValue() == null;
 	}
 
+	/**
+	 * Create the combobox data for selectable nurses.
+	 */
 	private void createComboBoxData() {
 		NurseDao dao = DaoFactory.getDaoFactory().createNurseDAO();
 		try {
@@ -162,6 +190,11 @@ public class NewTreatmentController {
 		}
 	}
 
+	/**
+	 * Searches for a given name in a list.
+	 * @param surname The given name.
+	 * @return <code>Nurse</code> The nurse that was searched for.
+	 */
 	private Nurse searchInList(String surname) {
 		for (Nurse nurse : this.nurseList) {
 			if (nurse.getSurname().equals(surname)) {
@@ -171,6 +204,10 @@ public class NewTreatmentController {
 		return null;
 	}
 
+	/**
+	 * Handles the combobox events
+	 * @param event The event that triggered this action.
+	 */
 	public void handleComboBox(ActionEvent event) {
 	}
 }

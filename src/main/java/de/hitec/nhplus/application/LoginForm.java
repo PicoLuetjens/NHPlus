@@ -11,15 +11,28 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The <code>LoginForm</code> contains the initialization of the <code>LoginFormView</code>. This includes the window setup and window settings.
+ */
 public class LoginForm extends Application {
 	private static Stage loginStage;
 
+	/**
+	 * When <code>start()</code> gets called, it sets the stage and calls the {@link #loginWindow(Stage)}} function.
+	 * *
+	 * @param primaryStage Stage that defines the loginStage.
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		loginStage = primaryStage;
 		loginWindow(primaryStage);
 	}
 
+	/**
+	 * When this function gets called, it sets up the login window.
+	 * *
+	 * @param primaryStage Stage that defines the loginStage assigned with the window.
+	 */
 	public void loginWindow(Stage primaryStage) {
 		try {
 			LoginFormController control = new LoginFormController();
@@ -37,6 +50,9 @@ public class LoginForm extends Application {
 		}
 	}
 
+	/**
+	 * When this function is called it closes the login window.
+	 */
 	public static void closeStage() {
 		loginStage.close();
 	}
