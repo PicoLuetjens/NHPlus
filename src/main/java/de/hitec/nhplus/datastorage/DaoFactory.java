@@ -12,6 +12,7 @@ public class DaoFactory {
 
     /**
      * Gets the DaoFactory instance.
+     * @return <code>DaoFactory</code> singleton instance.
      */
     public static DaoFactory getDaoFactory() {
         if (DaoFactory.instance == null) {
@@ -22,6 +23,7 @@ public class DaoFactory {
 
     /**
      * Creates a treatment dao.
+     * @return <code>TreatmentDao</code> to transfer data.
      */
     public TreatmentDao createTreatmentDao() {
         return new TreatmentDao(ConnectionBuilder.getConnection());
@@ -29,6 +31,7 @@ public class DaoFactory {
 
     /**
      * Creates a patient dao.
+     * @return <code>PatientDao</code> to transfer data.
      */
     public PatientDao createPatientDAO() {
         return new PatientDao(ConnectionBuilder.getConnection());
@@ -36,6 +39,7 @@ public class DaoFactory {
 
     /**
      * Creates a nurse dao.
+     * @return <code>NurseDao</code> to transfer data.
      */
     public NurseDao createNurseDAO() { return new NurseDao(ConnectionBuilder.getConnection());}
 }

@@ -353,6 +353,7 @@ public class AllCaregiverController {
 	/**
 	 * Validates the correct input of a telephonenumber.
 	 * @param value The Telephonenumber in String format.
+	 * @return <code>boolean</code> to determine if the given number is valid.
 	 */
 	private boolean isPhoneNumberValid(String value) {
 		String regex = "^[0-9+ \\-]+$";
@@ -362,6 +363,7 @@ public class AllCaregiverController {
 
 	/**
 	 * Validates that every inputfield data is valid.
+	 * @return <code>boolean</code> to determine if all the inputfield data is valid.
 	 */
 	private boolean areInputDataValid() {
 

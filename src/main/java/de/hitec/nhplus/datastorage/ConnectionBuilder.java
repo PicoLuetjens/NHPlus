@@ -18,6 +18,7 @@ public class ConnectionBuilder {
 
     /**
      * Creates a connection to the database.
+     * @return <code>Connection</code> the created connection.
      */
     synchronized public static Connection getConnection() {
         try {

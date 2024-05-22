@@ -229,6 +229,7 @@ public class AllTreatmentController {
     /**
      * Searches for a specific patient in the list.
      * @param surname The name to search for.
+     * @return <code>Patient</code> the patient that was searched for.
      */
     private Patient searchInList(String surname) {
         for (Patient patient : this.patientList) {

@@ -11,7 +11,7 @@ public interface Dao<T> {
 
     /**
      * defines a creation function.
-     * @param t DaoType
+     * @param t DaoType.
      */
     void create(T t) throws SQLException;
 

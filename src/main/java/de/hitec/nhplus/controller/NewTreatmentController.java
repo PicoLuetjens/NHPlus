@@ -144,6 +144,10 @@ public class NewTreatmentController {
 		stage.close();
 	}
 
+	/**
+	 * Validates that all Inputfield data is valid.
+	 * @return <code>boolean</code> to determine if the input data is valid.
+	 */
 	private boolean areInputDataInvalid() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		if (this.textFieldBegin.getText() == null || this.textFieldEnd.getText() == null) {
@@ -189,6 +193,7 @@ public class NewTreatmentController {
 	/**
 	 * Searches for a given name in a list.
 	 * @param surname The given name.
+	 * @return <code>Nurse</code> The nurse that was searched for.
 	 */
 	private Nurse searchInList(String surname) {
 		for (Nurse nurse : this.nurseList) {

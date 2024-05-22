@@ -122,6 +122,7 @@ public class TreatmentController {
     /**
      * Validates the time format.
      * @param time The time to validate in string format.
+     * @return <code>boolean</code> to determine if the Format is valid.
      */
     private boolean validateTimeFormat(String time) {
         try {
