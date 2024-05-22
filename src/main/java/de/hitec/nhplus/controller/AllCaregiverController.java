@@ -75,27 +75,18 @@ public class AllCaregiverController {
 		this.readAllAndShowInTableView();
 		this.autoDeleteByAge();
 		this.colID.setCellValueFactory(new PropertyValueFactory<>("nid"));
-
-		// CellValueFactory to show property values in TableView
 		this.colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-		// CellFactory to write property values from with in the TableView
 		this.colFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
-
 		this.colSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
 		this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
-
 		this.colTelephone.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
 		this.colTelephone.setCellFactory(TextFieldTableCell.forTableColumn());
-
 		this.islocked.setCellValueFactory(new PropertyValueFactory<>("locked"));
 		this.islocked.setCellFactory(TextFieldTableCell.forTableColumn());
-		if(!MainWindowController.IS_ADMIN) {
+		if (!MainWindowController.IS_ADMIN) {
 			this.islocked.setVisible(false);
 		}
-
-		//Anzeigen der Daten
 		this.tableView.setItems(this.nurses);
-
 		this.buttonDelete.setDisable(true);
 		this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Nurse>() {
 			@Override
@@ -112,15 +103,13 @@ public class AllCaregiverController {
 		this.textFieldTelephone.textProperty().addListener(inputNewNurseListener);
 	}
 
-	public void autoDeleteByAge(){
+	public void autoDeleteByAge() {
 		try {
 			LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
 			TreatmentDao tdao = DaoFactory.getDaoFactory().createTreatmentDao();
 			NurseDao ndao = DaoFactory.getDaoFactory().createNurseDAO();
 			List<Treatment> treatments = tdao.readAll();
 			List<Nurse> nurses = ndao.readAll();
-
-			// Lists to store treatments and nurses to be deleted
 			List<Treatment> treatmentsToDelete = new ArrayList<>();
 			List<Nurse> nursesToDelete = new ArrayList<>();
 
@@ -128,10 +117,9 @@ public class AllCaregiverController {
 				boolean hasYoungerAssignments = false;
 				for (Treatment treatment : treatments) {
 					if (treatment.getNid() == nurse.getNid()) {
-						if(DateConverter.convertStringToLocalDate(treatment.getDate()).isBefore(tenYearsAgo)){
+						if (DateConverter.convertStringToLocalDate(treatment.getDate()).isBefore(tenYearsAgo)) {
 							treatmentsToDelete.add(treatment);
-						}
-						else{
+						} else {
 							hasYoungerAssignments = true;
 						}
 					}
@@ -141,7 +129,6 @@ public class AllCaregiverController {
 				}
 			}
 
-			// Remove the collected treatments and nurses
 			for (Treatment treatment : treatmentsToDelete) {
 				treatments.remove(treatment);
 				tdao.deleteById(treatment.getTid());
@@ -174,16 +161,17 @@ public class AllCaregiverController {
 	 * @param event Event including the changed object and the change.
 	 */
 	@FXML
-	public void handleOnEditFirstname(TableColumn.CellEditEvent<Nurse, String> event){
+	public void handleOnEditFirstname(TableColumn.CellEditEvent<Nurse, String> event) {
 		event.getRowValue().setFirstName(event.getNewValue());
 		TreatmentDao tdao = DaoFactory.getDaoFactory().createTreatmentDao();
-        List<Treatment> treatments = null;
-        try {
-            treatments = tdao.readTreatmentsByNid(event.getRowValue().getNid());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-		treatments.forEach(treatment -> {treatment.setNurseFirstname(event.getNewValue());
+		List<Treatment> treatments = null;
+		try {
+			treatments = tdao.readTreatmentsByNid(event.getRowValue().getNid());
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		treatments.forEach(treatment -> {
+			treatment.setNurseFirstname(event.getNewValue());
 			try {
 				tdao.update(treatment);
 			} catch (SQLException e) {
@@ -199,17 +187,18 @@ public class AllCaregiverController {
 	 * @param event Event including the changed object and the change.
 	 */
 	@FXML
-	public void handleOnEditSurname(TableColumn.CellEditEvent<Nurse, String> event){
+	public void handleOnEditSurname(TableColumn.CellEditEvent<Nurse, String> event) {
 		event.getRowValue().setSurname(event.getNewValue());
 		TreatmentDao tdao = DaoFactory.getDaoFactory().createTreatmentDao();
-        List<Treatment> treatments = null;
-        try {
-            treatments = tdao.readTreatmentsByNid(event.getRowValue().getNid());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+		List<Treatment> treatments = null;
+		try {
+			treatments = tdao.readTreatmentsByNid(event.getRowValue().getNid());
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 
-        treatments.forEach(treatment -> {treatment.setNurseSurname(event.getNewValue());
+		treatments.forEach(treatment -> {
+			treatment.setNurseSurname(event.getNewValue());
 			try {
 				tdao.update(treatment);
 			} catch (SQLException e) {
@@ -225,24 +214,25 @@ public class AllCaregiverController {
 	 * @param event Event including the changed object and the change.
 	 */
 	@FXML
-	public void handleOnEditTelephone(TableColumn.CellEditEvent<Nurse, String> event){
+	public void handleOnEditTelephone(TableColumn.CellEditEvent<Nurse, String> event) {
 		String oldValue = event.getOldValue();
 		if (this.isPhoneNumberValid(event.getNewValue())) {
 			event.getRowValue().setPhoneNumber(event.getNewValue());
 			TreatmentDao tdao = DaoFactory.getDaoFactory().createTreatmentDao();
-            List<Treatment> treatments = null;
-            try {
-                treatments = tdao.readTreatmentsByNid(event.getRowValue().getNid());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            treatments.forEach(treatment -> {treatment.setNursePhonenumber(event.getNewValue());
-                try {
-                    tdao.update(treatment);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+			List<Treatment> treatments = null;
+			try {
+				treatments = tdao.readTreatmentsByNid(event.getRowValue().getNid());
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+			treatments.forEach(treatment -> {
+				treatment.setNursePhonenumber(event.getNewValue());
+				try {
+					tdao.update(treatment);
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+			});
 
 		} else {
 			event.getRowValue().setPhoneNumber(oldValue);
@@ -290,7 +280,7 @@ public class AllCaregiverController {
 		this.dao = DaoFactory.getDaoFactory().createNurseDAO();
 		try {
 			this.nurses.addAll(this.dao.readAll());
-			if(!MainWindowController.IS_ADMIN) {
+			if (!MainWindowController.IS_ADMIN) {
 				this.removeByLockedStatus();
 			}
 		} catch (SQLException exception) {

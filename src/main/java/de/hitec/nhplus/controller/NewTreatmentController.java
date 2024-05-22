@@ -53,7 +53,6 @@ public class NewTreatmentController {
 	private ComboBox<String> comboBoxNurseSelection;
 	private final ObservableList<String> nurseSelection = FXCollections.observableArrayList();
 	private ArrayList<Nurse> nurseList;
-
 	private AllTreatmentController controller;
 	private Patient patient;
 	private Nurse nurse;
@@ -66,7 +65,6 @@ public class NewTreatmentController {
 		this.createComboBoxData();
 		comboBoxNurseSelection.getSelectionModel().select(0);
 		this.stage = stage;
-
 		this.buttonAdd.setDisable(true);
 		ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) ->
 			NewTreatmentController.this.buttonAdd.setDisable(NewTreatmentController.this.areInputDataInvalid());
@@ -80,7 +78,6 @@ public class NewTreatmentController {
 			public String toString(LocalDate localDate) {
 				return (localDate == null) ? "" : DateConverter.convertLocalDateToString(localDate);
 			}
-
 			@Override
 			public LocalDate fromString(String localDate) {
 				return DateConverter.convertStringToLocalDate(localDate);
@@ -142,7 +139,6 @@ public class NewTreatmentController {
 		} catch (ParseException e) {
 			return true;
 		}
-
 		if (!textFieldBegin.getText().matches("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$") || !textFieldEnd.getText().matches("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")) {
 			return true;
 		}

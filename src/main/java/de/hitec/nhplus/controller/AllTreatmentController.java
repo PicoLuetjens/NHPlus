@@ -101,7 +101,6 @@ public class AllTreatmentController {
 
     public void autoDeleteByAge(){
         LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
-
         Iterator<Treatment> iterator = this.treatments.iterator();
         while (iterator.hasNext()) {
             Treatment treatment = iterator.next();
@@ -130,7 +129,6 @@ public class AllTreatmentController {
         try {
             NurseDao ndao = DaoFactory.getDaoFactory().createNurseDAO();
             List<Nurse> nurses = ndao.readAll();
-
             for(Treatment treatment : this.treatments){
                 for(Nurse nurse : nurses){
                     if(treatment.getNid() == nurse.getNid() && "true".equals(nurse.isLocked())){

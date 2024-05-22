@@ -2,7 +2,6 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.application.LoginForm;
 import de.hitec.nhplus.application.MainWindow;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,7 +21,6 @@ public class LoginFormController {
 	@FXML
 	private Label responseLabel;
 
-	private Stage bufferStage;
 	private static final String CORRECT_USERNAME = "test";
 	private static final String CORRECT_PASSWORD = "pass123";
 	private static final String CORRECT_ADMIN_USERNAME = "admin";

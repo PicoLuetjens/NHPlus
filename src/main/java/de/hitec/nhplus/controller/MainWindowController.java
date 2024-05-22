@@ -4,7 +4,6 @@ import de.hitec.nhplus.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
