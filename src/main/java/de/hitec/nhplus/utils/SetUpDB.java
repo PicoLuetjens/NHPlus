@@ -20,229 +20,239 @@ import static de.hitec.nhplus.utils.DateConverter.convertStringToLocalTime;
  */
 public class SetUpDB {
 
-    /**
-     * This method wipes the database by dropping the tables. Then the method calls DDL statements to build it up from
-     * scratch and DML statements to fill the database with hard coded test data.
-     */
-    public static void setUpDb() {
-        Connection connection = ConnectionBuilder.getConnection();
-        SetUpDB.wipeDb(connection);
-        SetUpDB.setUpTablePatient(connection);
-        SetUpDB.setUpTableNurse(connection);
-        SetUpDB.setUpTableTreatment(connection);
-        SetUpDB.setUpPatients();
-        SetUpDB.setUpNurses();
-        SetUpDB.setUpTreatments();
-    }
+	/**
+	 * This method wipes the database by dropping the tables. Then the method calls DDL statements to build it up from
+	 * scratch and DML statements to fill the database with hard coded test data.
+	 */
+	public static void setUpDb() {
+		Connection connection = ConnectionBuilder.getConnection();
+		SetUpDB.wipeDb(connection);
+		SetUpDB.setUpTablePatient(connection);
+		SetUpDB.setUpTableNurse(connection);
+		SetUpDB.setUpTableTreatment(connection);
+		SetUpDB.setUpPatients();
+		SetUpDB.setUpNurses();
+		SetUpDB.setUpTreatments();
+	}
 
-    /**
-     * This method wipes the database by dropping the tables.
-     */
-    public static void wipeDb(Connection connection) {
-        try (Statement statement = connection.createStatement()) {
-            statement.execute("DROP TABLE patient");
-            statement.execute("DROP TABLE treatment");
-            statement.execute("DROP TABLE nurse");
+	/**
+	 * This method wipes the database by dropping the tables.
+	 */
+	public static void wipeDb(Connection connection) {
+		try (Statement statement = connection.createStatement()) {
+			statement.execute("DROP TABLE patient");
+			statement.execute("DROP TABLE treatment");
+			statement.execute("DROP TABLE nurse");
 
-        } catch (SQLException exception) {
-            System.out.println(exception.getMessage());
-        }
-    }
+		} catch (SQLException exception) {
+			System.out.println(exception.getMessage());
+		}
+	}
 
-    private static void setUpTablePatient(Connection connection) {
-        final String SQL = "CREATE TABLE IF NOT EXISTS patient (" +
-                "   pid INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "   firstname TEXT NOT NULL, " +
-                "   surname TEXT NOT NULL, " +
-                "   dateOfBirth TEXT NOT NULL, " +
-                "   carelevel TEXT NOT NULL, " +
-                "   roomnumber TEXT NOT NULL " +
-                ");";
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(SQL);
-        } catch (SQLException exception) {
-            System.out.println(exception.getMessage());
-        }
-    }
+	private static void setUpTablePatient(Connection connection) {
+		final String SQL = "CREATE TABLE IF NOT EXISTS patient (" +
+			"   pid INTEGER PRIMARY KEY AUTOINCREMENT, " +
+			"   firstname TEXT NOT NULL, " +
+			"   surname TEXT NOT NULL, " +
+			"   dateOfBirth TEXT NOT NULL, " +
+			"   carelevel TEXT NOT NULL, " +
+			"   roomnumber TEXT NOT NULL " +
+			");";
+		try (Statement statement = connection.createStatement()) {
+			statement.execute(SQL);
+		} catch (SQLException exception) {
+			System.out.println(exception.getMessage());
+		}
+	}
 
-    private static void setUpTableTreatment(Connection connection) {
-        final String SQL = "CREATE TABLE IF NOT EXISTS treatment (" +
-                "   tid INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "   pid INTEGER NOT NULL, " +
-                "   nid INTEGER NOT NULL, " +
-                "   treatment_date TEXT NOT NULL, " +
-                "   begin TEXT NOT NULL, " +
-                "   end TEXT NOT NULL, " +
-                "   description TEXT NOT NULL, " +
-                "   remark TEXT NOT NULL," +
-                "   nurseSurname TEXT NOT NULL," +
-                "   nurseFirstname TEXT NOT NULL," +
-                "   nursePhonenumber TEXT NOT NULL," +
-                "   IS_LOCKED TEXT NOT NULL," +
-                "   FOREIGN KEY (pid) REFERENCES patient (pid) ON DELETE CASCADE, " +
-                "   FOREIGN KEY (nid) REFERENCES nurse (nid) ON DELETE CASCADE " +
-                ");";
+	private static void setUpTableTreatment(Connection connection) {
+		final String SQL = "CREATE TABLE IF NOT EXISTS treatment (" +
+			"   tid INTEGER PRIMARY KEY AUTOINCREMENT, " +
+			"   pid INTEGER NOT NULL, " +
+			"   nid INTEGER NOT NULL, " +
+			"   treatment_date TEXT NOT NULL, " +
+			"   begin TEXT NOT NULL, " +
+			"   end TEXT NOT NULL, " +
+			"   description TEXT NOT NULL, " +
+			"   remark TEXT NOT NULL," +
+			"   nurseSurname TEXT NOT NULL," +
+			"   nurseFirstname TEXT NOT NULL," +
+			"   nursePhonenumber TEXT NOT NULL," +
+			"   IS_LOCKED TEXT NOT NULL," +
+			"   FOREIGN KEY (pid) REFERENCES patient (pid) ON DELETE CASCADE, " +
+			"   FOREIGN KEY (nid) REFERENCES nurse (nid) ON DELETE CASCADE " +
+			");";
 
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(SQL);
-        } catch (SQLException exception) {
-            System.out.println(exception.getMessage());
-        }
-    }
+		try (Statement statement = connection.createStatement()) {
+			statement.execute(SQL);
+		} catch (SQLException exception) {
+			System.out.println(exception.getMessage());
+		}
+	}
 
-    private static void setUpTableNurse(Connection connection) {
-        final String SQL = "CREATE TABLE IF NOT EXISTS nurse (" +
-                "   nid INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "   firstname TEXT NOT NULL, " +
-                "   surname TEXT NOT NULL, " +
-                "   phonenumber TEXT NOT NULL, " +
-                "   IS_LOCKED TEXT NOT NULL " +
-                ");";
+	private static void setUpTableNurse(Connection connection) {
+		final String SQL = "CREATE TABLE IF NOT EXISTS nurse (" +
+			"   nid INTEGER PRIMARY KEY AUTOINCREMENT, " +
+			"   firstname TEXT NOT NULL, " +
+			"   surname TEXT NOT NULL, " +
+			"   phonenumber TEXT NOT NULL, " +
+			"   IS_LOCKED TEXT NOT NULL " +
+			");";
 
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(SQL);
-        } catch (SQLException exception) {
-            System.out.println(exception.getMessage());
-        }
-    }
+		try (Statement statement = connection.createStatement()) {
+			statement.execute(SQL);
+		} catch (SQLException exception) {
+			System.out.println(exception.getMessage());
+		}
+	}
 
-    private static void setUpPatients() {
-        try {
-            PatientDao dao = DaoFactory.getDaoFactory().createPatientDAO();
-            dao.create(new Patient("Seppl", "Herberger", convertStringToLocalDate("1945-12-01"), "4", "202"));
-            dao.create(new Patient("Martina", "Gerdsen", convertStringToLocalDate("1954-08-12"), "5", "010"));
-            dao.create(new Patient("Gertrud", "Franzen", convertStringToLocalDate("1949-04-16"), "3", "002"));
-            dao.create(new Patient("Ahmet", "Yilmaz", convertStringToLocalDate("1941-02-22"), "3", "013"));
-            dao.create(new Patient("Hans", "Neumann", convertStringToLocalDate("1955-12-12"), "2", "001"));
-            dao.create(new Patient("Elisabeth", "Müller", convertStringToLocalDate("1958-03-07"), "5", "110"));
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-    }
+	private static void setUpPatients() {
+		try {
+			PatientDao dao = DaoFactory.getDaoFactory().createPatientDAO();
+			dao.create(new Patient("Seppl", "Herberger", convertStringToLocalDate("1945-12-01"), "4", "202"));
+			dao.create(new Patient("Martina", "Gerdsen", convertStringToLocalDate("1954-08-12"), "5", "010"));
+			dao.create(new Patient("Gertrud", "Franzen", convertStringToLocalDate("1949-04-16"), "3", "002"));
+			dao.create(new Patient("Ahmet", "Yilmaz", convertStringToLocalDate("1941-02-22"), "3", "013"));
+			dao.create(new Patient("Hans", "Neumann", convertStringToLocalDate("1955-12-12"), "2", "001"));
+			dao.create(new Patient("Elisabeth", "Müller", convertStringToLocalDate("1958-03-07"), "5", "110"));
+		} catch (SQLException exception) {
+			exception.printStackTrace();
+		}
+	}
 
-    private static void setUpTreatments() {
-        try {
-            TreatmentDao dao = DaoFactory.getDaoFactory().createTreatmentDao();
-            dao.create(new Treatment(1,
-                            1,
-                            convertStringToLocalDate("2023-06-03"),
-                            convertStringToLocalTime("11:00"),
-                            convertStringToLocalTime("15:00"),
-                            "Gespräch",
-                            "Der Patient hat enorme Angstgefühle und glaubt, er sei überfallen worden. Ihm seien alle Wertsachen gestohlen worden.\nPatient beruhigt sich erst, als alle Wertsachen im Zimmer gefunden worden sind.",
-                            "Nowak",
-                            "Svetlana",
-                            "0421 1234567",
-                    "false"));
-            dao.create(new Treatment(2,
-                    1,1,
-                    convertStringToLocalDate("2023-06-05"),
-                    convertStringToLocalTime("11:00"),
-                    convertStringToLocalTime("12:30"),
-                    "Gespräch",
-                    "Patient irrt auf der Suche nach gestohlenen Wertsachen durch die Etage und bezichtigt andere Bewohner des Diebstahls.\nPatient wird in seinen Raum zurückbegleitet und erhält Beruhigungsmittel.",
-                    "Nowak",
-                    "Svetlana",
-                    "0421 1234567",
-                    "false"));
-            dao.create(new Treatment(3,
-                    2,2,
-                    convertStringToLocalDate("2023-06-04"),
-                    convertStringToLocalTime("07:30"),
-                    convertStringToLocalTime("08:00"),
-                    "Waschen",
-                    "Patient mit Waschlappen gewaschen und frisch angezogen. Patient gewendet.",
-                    "Kowalski",
-                    "Jan",
-                    "0421 7654321",
-                    "false"));
-            dao.create(new Treatment(4,
-                    1,2,
-                    convertStringToLocalDate("2023-06-06"),
-                    convertStringToLocalTime("15:10"),
-                    convertStringToLocalTime("16:00"),
-                    "Spaziergang",
-                    "Spaziergang im Park, Patient döst  im Rollstuhl ein",
-                    "Kowalski",
-                    "Jan",
-                    "0421 7654321",
-                    "false"));
-            dao.create(new Treatment(8,
-                    1,2,
-                    convertStringToLocalDate("2023-06-08"),
-                    convertStringToLocalTime("15:00"),
-                    convertStringToLocalTime("16:00"),
-                    "Spaziergang",
-                    "Parkspaziergang; Patient ist heute lebhafter und hat klare Momente; erzählt von seiner Tochter",
-                    "Kowalski",
-                    "Jan",
-                    "0421 7654321",
-                    "false"));
-            dao.create(new Treatment(9,
-                    2,3,
-                    convertStringToLocalDate("2023-06-07"),
-                    convertStringToLocalTime("11:00"),
-                    convertStringToLocalTime("11:30"),
-                    "Waschen",
-                    "Waschen per Dusche auf einem Stuhl; Patientin gewendet;",
-                    "Zielinski",
-                    "Tomas",
-                    "0421 2345678",
-                    "false"));
-            dao.create(new Treatment(12,
-                    5,4,
-                    convertStringToLocalDate("2023-06-08"),
-                    convertStringToLocalTime("15:00"),
-                    convertStringToLocalTime("15:30"),
-                    "Physiotherapie",
-                    "Übungen zur Stabilisation und Mobilisierung der Rückenmuskulatur",
-                    "Wagner",
-                    "Klaus",
-                    "0421 8765432",
-                    "false"));
-            dao.create(new Treatment(14, 4, 4,convertStringToLocalDate("2023-08-24"), convertStringToLocalTime("09:30"), convertStringToLocalTime("10:15"), "KG", "Lympfdrainage", "Wagner", "Klaus", "0421 8765432", "false"));
-            dao.create(new Treatment(16,
-                    6,5,
-                    convertStringToLocalDate("2023-08-31"),
-                    convertStringToLocalTime("13:30"),
-                    convertStringToLocalTime("13:45"),
-                    "Toilettengang",
-                    "Hilfe beim Toilettengang; Patientin klagt über Schmerzen beim Stuhlgang. Gabe von Iberogast",
-                    "Schmidt",
-                    "Peter",
-                    "0421 3456789",
-                    "false"));
-            dao.create(new Treatment(17,
-                    6,6,
-                    convertStringToLocalDate("2023-09-01"),
-                    convertStringToLocalTime("16:00"),
-                    convertStringToLocalTime("17:00"),
-                    "KG",
-                    "Massage der Extremitäten zur Verbesserung der Durchblutung",
-                    "Schneider",
-                    "Lena",
-                    "0421 9876543",
-                    "false"));
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-    }
+	private static void setUpTreatments() {
+		try {
+			TreatmentDao dao = DaoFactory.getDaoFactory().createTreatmentDao();
+			dao.create(new Treatment(1,
+				1,
+				convertStringToLocalDate("2023-06-03"),
+				convertStringToLocalTime("11:00"),
+				convertStringToLocalTime("15:00"),
+				"Gespräch",
+				"Der Patient hat enorme Angstgefühle und glaubt, er sei überfallen worden. Ihm seien alle Wertsachen gestohlen worden.\nPatient beruhigt sich erst, als alle Wertsachen im Zimmer gefunden worden sind.",
+				"Nowak",
+				"Svetlana",
+				"0421 1234567",
+				"false"));
+			dao.create(new Treatment(2,
+				1, 1,
+				convertStringToLocalDate("2023-06-05"),
+				convertStringToLocalTime("11:00"),
+				convertStringToLocalTime("12:30"),
+				"Gespräch",
+				"Patient irrt auf der Suche nach gestohlenen Wertsachen durch die Etage und bezichtigt andere Bewohner des Diebstahls.\nPatient wird in seinen Raum zurückbegleitet und erhält Beruhigungsmittel.",
+				"Nowak",
+				"Svetlana",
+				"0421 1234567",
+				"false"));
+			dao.create(new Treatment(3,
+				2, 2,
+				convertStringToLocalDate("2023-06-04"),
+				convertStringToLocalTime("07:30"),
+				convertStringToLocalTime("08:00"),
+				"Waschen",
+				"Patient mit Waschlappen gewaschen und frisch angezogen. Patient gewendet.",
+				"Kowalski",
+				"Jan",
+				"0421 7654321",
+				"false"));
+			dao.create(new Treatment(4,
+				1, 2,
+				convertStringToLocalDate("2023-06-06"),
+				convertStringToLocalTime("15:10"),
+				convertStringToLocalTime("16:00"),
+				"Spaziergang",
+				"Spaziergang im Park, Patient döst  im Rollstuhl ein",
+				"Kowalski",
+				"Jan",
+				"0421 7654321",
+				"false"));
+			dao.create(new Treatment(8,
+				1, 2,
+				convertStringToLocalDate("2023-06-08"),
+				convertStringToLocalTime("15:00"),
+				convertStringToLocalTime("16:00"),
+				"Spaziergang",
+				"Parkspaziergang; Patient ist heute lebhafter und hat klare Momente; erzählt von seiner Tochter",
+				"Kowalski",
+				"Jan",
+				"0421 7654321",
+				"false"));
+			dao.create(new Treatment(9,
+				2, 3,
+				convertStringToLocalDate("2023-06-07"),
+				convertStringToLocalTime("11:00"),
+				convertStringToLocalTime("11:30"),
+				"Waschen",
+				"Waschen per Dusche auf einem Stuhl; Patientin gewendet;",
+				"Zielinski",
+				"Tomas",
+				"0421 2345678",
+				"false"));
+			dao.create(new Treatment(12,
+				5, 4,
+				convertStringToLocalDate("2023-06-08"),
+				convertStringToLocalTime("15:00"),
+				convertStringToLocalTime("15:30"),
+				"Physiotherapie",
+				"Übungen zur Stabilisation und Mobilisierung der Rückenmuskulatur",
+				"Wagner",
+				"Klaus",
+				"0421 8765432",
+				"false"));
+			dao.create(new Treatment(14,
+                4, 4,
+                convertStringToLocalDate("2023-08-24"),
+                convertStringToLocalTime("09:30"),
+                convertStringToLocalTime("10:15"),
+                "KG",
+                "Lympfdrainage",
+                "Wagner",
+                "Klaus",
+                "0421 8765432",
+                "false"));
+			dao.create(new Treatment(16,
+				6, 5,
+				convertStringToLocalDate("2023-08-31"),
+				convertStringToLocalTime("13:30"),
+				convertStringToLocalTime("13:45"),
+				"Toilettengang",
+				"Hilfe beim Toilettengang; Patientin klagt über Schmerzen beim Stuhlgang. Gabe von Iberogast",
+				"Schmidt",
+				"Peter",
+				"0421 3456789",
+				"false"));
+			dao.create(new Treatment(17,
+				6, 6,
+				convertStringToLocalDate("2023-09-01"),
+				convertStringToLocalTime("16:00"),
+				convertStringToLocalTime("17:00"),
+				"KG",
+				"Massage der Extremitäten zur Verbesserung der Durchblutung",
+				"Schneider",
+				"Lena",
+				"0421 9876543",
+				"false"));
+		} catch (SQLException exception) {
+			exception.printStackTrace();
+		}
+	}
 
-    private static void setUpNurses() {
-        try {
-            NurseDao dao = DaoFactory.getDaoFactory().createNurseDAO();
-            dao.create(new Nurse(1, "Svetlana", "Nowak", "0421 1234567", "false"));
-            dao.create(new Nurse(1, "Jan", "Kowalski", "0421 7654321", "false"));
-            dao.create(new Nurse(1, "Tomas", "Zielinski", "0421 2345678", "false"));
-            dao.create(new Nurse(1, "Klaus", "Wagner", "0421 8765432", "false"));
-            dao.create(new Nurse(1, "Peter", "Schmidt", "0421 3456789", "false"));
-            dao.create(new Nurse(1, "Lena", "Scheider", "0421 9876543", "false"));
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-    }
+	private static void setUpNurses() {
+		try {
+			NurseDao dao = DaoFactory.getDaoFactory().createNurseDAO();
+			dao.create(new Nurse(1, "Svetlana", "Nowak", "0421 1234567", "false"));
+			dao.create(new Nurse(1, "Jan", "Kowalski", "0421 7654321", "false"));
+			dao.create(new Nurse(1, "Tomas", "Zielinski", "0421 2345678", "false"));
+			dao.create(new Nurse(1, "Klaus", "Wagner", "0421 8765432", "false"));
+			dao.create(new Nurse(1, "Peter", "Schmidt", "0421 3456789", "false"));
+			dao.create(new Nurse(1, "Lena", "Scheider", "0421 9876543", "false"));
+		} catch (SQLException exception) {
+			exception.printStackTrace();
+		}
+	}
 
-    public static void main(String[] args) {
-        SetUpDB.setUpDb();
-    }
+	public static void main(String[] args) {
+		SetUpDB.setUpDb();
+	}
 }
