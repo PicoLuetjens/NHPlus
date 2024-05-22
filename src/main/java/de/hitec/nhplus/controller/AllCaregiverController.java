@@ -161,8 +161,8 @@ public class AllCaregiverController {
 	}
 
 	/**
-	 * When <code>removeByLockedStatus()</code> it ensures that it removes locked Nurses from the view that is shown in the program.
-	 * However, this does not effect the database itself.
+	 * When <code>removeByLockedStatus()</code> gets called, it ensures that it removes locked Nurses from the view that is shown in the program.
+	 * However, this does not affect the database itself.
 	 */
 	private void removeByLockedStatus() {
 		Iterator<Nurse> iterator = this.nurses.iterator();

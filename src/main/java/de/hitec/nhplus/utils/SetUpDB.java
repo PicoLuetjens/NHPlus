@@ -37,6 +37,7 @@ public class SetUpDB {
 
     /**
      * This method wipes the database by dropping the tables.
+     * @param connection The connection to the database.
      */
     public static void wipeDb(Connection connection) {
         try (Statement statement = connection.createStatement()) {
@@ -48,7 +49,10 @@ public class SetUpDB {
             System.out.println(exception.getMessage());
         }
     }
-
+    /**
+     * This method sets up the table for the patients in the database.
+     * @param connection The connection to the database.
+     */
     private static void setUpTablePatient(Connection connection) {
         final String SQL = "CREATE TABLE IF NOT EXISTS patient (" +
                 "   pid INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -65,6 +69,10 @@ public class SetUpDB {
         }
     }
 
+    /**
+     * This method sets up the table for the treatments in the database.
+     * @param connection The connection to the database.
+     */
     private static void setUpTableTreatment(Connection connection) {
         final String SQL = "CREATE TABLE IF NOT EXISTS treatment (" +
                 "   tid INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -90,6 +98,10 @@ public class SetUpDB {
         }
     }
 
+    /**
+     * This method sets up the table for the nurses in the database.
+     * @param connection The connection to the database.
+     */
     private static void setUpTableNurse(Connection connection) {
         final String SQL = "CREATE TABLE IF NOT EXISTS nurse (" +
                 "   nid INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -106,6 +118,9 @@ public class SetUpDB {
         }
     }
 
+    /**
+     * This method adds predefined patients to the database.
+     */
     private static void setUpPatients() {
         try {
             PatientDao dao = DaoFactory.getDaoFactory().createPatientDAO();
@@ -120,6 +135,9 @@ public class SetUpDB {
         }
     }
 
+    /**
+     * This method adds predefined treatments to the database.
+     */
     private static void setUpTreatments() {
         try {
             TreatmentDao dao = DaoFactory.getDaoFactory().createTreatmentDao();
@@ -228,6 +246,9 @@ public class SetUpDB {
         }
     }
 
+    /**
+     * This method adds predefined nurses to the database.
+     */
     private static void setUpNurses() {
         try {
             NurseDao dao = DaoFactory.getDaoFactory().createNurseDAO();

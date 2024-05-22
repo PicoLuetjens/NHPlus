@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * The <code>AllTreatmentController</code> contains the entire logic of the treatment view. It determines which data is displayed and how to react to events.
+ */
 public class AllTreatmentController {
 
     @FXML
@@ -73,6 +76,11 @@ public class AllTreatmentController {
     private final ObservableList<String> patientSelection = FXCollections.observableArrayList();
     private ArrayList<Patient> patientList;
 
+    /**
+     * When <code>initialize()</code> gets called, all fields are already initialized. For example from the FXMLLoader
+     * after loading an FXML-File. At this point of the lifecycle of the Controller, the fields can be accessed and
+     * configured.
+     */
     public void initialize() {
         readAllAndShowInTableView();
         comboBoxPatientSelection.setItems(patientSelection);
@@ -99,6 +107,10 @@ public class AllTreatmentController {
                         AllTreatmentController.this.buttonDelete.setDisable(newTreatment == null));
     }
 
+    /**
+     * When <code>autoDeleteByAge()</code> gets called, it ensures that Treatments that are
+     * older than ten years will be deleted form the database.
+     */
     public void autoDeleteByAge(){
         LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
 
@@ -116,6 +128,10 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * When <code>removeByLockedStatus()</code> gets called, it ensures that it removes locked Treatments from the view that is shown in the program.
+     * However, this does not affect the database itself.
+     */
     public void removeByLockedStatus() {
         Iterator<Treatment> iterator = this.treatments.iterator();
         while (iterator.hasNext()) {
@@ -126,6 +142,11 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * When <code>updateFieldsByNurseLockedStatus()</code> is called, it ensures that it updates the data of the locked nurse in the
+     * treatment to not be visible anymore.
+     * However, this does not effect the database itself.
+     */
     public void updateFieldsByNurseLockedStatus(){
         try {
             NurseDao ndao = DaoFactory.getDaoFactory().createNurseDAO();
@@ -145,6 +166,10 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Reloads all treatments to the table by clearing the list of all treatments and filling it again by all persisted
+     * treatments, delivered by {@link TreatmentDao}.
+     */
     public void readAllAndShowInTableView() {
         comboBoxPatientSelection.getSelectionModel().select(0);
         this.dao = DaoFactory.getDaoFactory().createTreatmentDao();
@@ -159,6 +184,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Creates the combobox selections and sets the default selection to "alle".
+     */
     private void createComboBoxData() {
         PatientDao dao = DaoFactory.getDaoFactory().createPatientDAO();
         try {
@@ -172,6 +200,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Handles the combobox selection.
+     */
     @FXML
     public void handleComboBox() {
         String selectedPatient = this.comboBoxPatientSelection.getSelectionModel().getSelectedItem();
@@ -195,6 +226,10 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Searches for a specific patient in the list.
+     * @param surname The name to search for.
+     */
     private Patient searchInList(String surname) {
         for (Patient patient : this.patientList) {
             if (patient.getSurname().equals(surname)) {
@@ -204,6 +239,9 @@ public class AllTreatmentController {
         return null;
     }
 
+    /**
+     * Handles the deletion of treatments.
+     */
     @FXML
     public void handleDelete() {
         int index = this.tableView.getSelectionModel().getSelectedIndex();
@@ -216,6 +254,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Handles the creation of new treatments.
+     */
     @FXML
     public void handleNewTreatment() {
         try{
@@ -231,6 +272,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Handles the selection of treatments.
+     */
     @FXML
     public void handleMouseClick() {
         tableView.setOnMouseClicked(event -> {
@@ -242,6 +286,10 @@ public class AllTreatmentController {
         });
     }
 
+    /**
+     * Handles the window dialog for the creation of a new treatment.
+     * @param patient The patient selected to create a new treatment for.
+     */
     public void newTreatmentWindow(Patient patient) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/NewTreatmentView.fxml"));
@@ -258,6 +306,10 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Handles the window dialog for the editing of an existing treatment.
+     * @param treatment The treatment that should be edited.
+     */
     public void treatmentWindow(Treatment treatment){
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/TreatmentView.fxml"));
