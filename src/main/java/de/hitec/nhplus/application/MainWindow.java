@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * The <code>LoginForm</code> contains the initialization of the <code>MainWindowView</code>. This includes the window setup and window settings.
+ * The <code>MainWindow</code> contains the initialization of the <code>MainWindowView</code>. This includes the window setup and window settings.
  */
 public class MainWindow extends Application {
 	private Stage primaryStage;

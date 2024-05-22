@@ -6,6 +6,9 @@ import java.sql.SQLException;
 
 import org.sqlite.SQLiteConfig;
 
+/**
+ * The <code>ConnectionBuilder</code> contains the logic to create a connection to the database.
+ */
 public class ConnectionBuilder {
 
     private static final String DB_NAME = "nursingHome.db";
@@ -13,6 +16,9 @@ public class ConnectionBuilder {
 
     private static Connection connection;
 
+    /**
+     * Creates a connection to the database.
+     */
     synchronized public static Connection getConnection() {
         try {
             if (ConnectionBuilder.connection == null) {
@@ -27,6 +33,9 @@ public class ConnectionBuilder {
         return ConnectionBuilder.connection;
     }
 
+    /**
+     * Closes a connection to the database.
+     */
     synchronized public static void closeConnection() {
         try {
             if (ConnectionBuilder.connection != null) {
