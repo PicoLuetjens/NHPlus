@@ -6,34 +6,46 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.sqlite.SQLiteConfig;
+
+/**
+ * The <code>ConnectionBuilder</code> contains the logic to create a connection to the database.
+ */
 public class ConnectionBuilder {
 
 	private static final String DB_NAME = "nursingHome.db";
 	private static final String URL = "jdbc:sqlite:db/" + DB_NAME;
 	private static Connection connection;
 
-	synchronized public static Connection getConnection() {
-		try {
-			if (ConnectionBuilder.connection == null) {
-				SQLiteConfig configuration = new SQLiteConfig();
-				configuration.enforceForeignKeys(true);
-				ConnectionBuilder.connection = DriverManager.getConnection(URL, configuration.toProperties());
-			}
-		} catch (SQLException exception) {
-			System.out.println("Verbindung zur Datenbank konnte nicht aufgebaut werden!");
-			exception.printStackTrace();
-		}
-		return ConnectionBuilder.connection;
-	}
+    /**
+     * Creates a connection to the database.
+     * @return <code>Connection</code> the created connection.
+     */
+    synchronized public static Connection getConnection() {
+        try {
+            if (ConnectionBuilder.connection == null) {
+                SQLiteConfig configuration = new SQLiteConfig();
+                configuration.enforceForeignKeys(true);
+                ConnectionBuilder.connection = DriverManager.getConnection(URL, configuration.toProperties());
+            }
+        } catch (SQLException exception) {
+            System.out.println("Verbindung zur Datenbank konnte nicht aufgebaut werden!");
+            exception.printStackTrace();
+        }
+        return ConnectionBuilder.connection;
+    }
 
-	synchronized public static void closeConnection() {
-		try {
-			if (ConnectionBuilder.connection != null) {
-				ConnectionBuilder.connection.close();
-				ConnectionBuilder.connection = null;
-			}
-		} catch (SQLException exception) {
-			exception.printStackTrace();
-		}
-	}
+    /**
+     * Closes a connection to the database.
+     */
+    synchronized public static void closeConnection() {
+        try {
+            if (ConnectionBuilder.connection != null) {
+                ConnectionBuilder.connection.close();
+                ConnectionBuilder.connection = null;
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
 }
