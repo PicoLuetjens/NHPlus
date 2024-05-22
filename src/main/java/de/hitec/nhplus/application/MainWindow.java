@@ -13,15 +13,26 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The <code>LoginForm</code> contains the initialization of the <code>MainWindowView</code>. This includes the window setup and window settings.
+ */
 public class MainWindow extends Application {
 	private Stage primaryStage;
 
+	/**
+	 * When <code>start()</code> gets called, it sets the stage and calls the {@link #mainWindow()} function.
+	 * *
+	 * @param primaryStage Stage that defines the mainStage.
+	 */
 	public void start(Stage primaryStage) {
 
 		this.primaryStage = primaryStage;
 		mainWindow();
 	}
 
+	/**
+	 * When this function gets called, it sets up the main window.
+	 */
 	public void mainWindow() {
 		try {
 			FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/MainWindowView.fxml"));
