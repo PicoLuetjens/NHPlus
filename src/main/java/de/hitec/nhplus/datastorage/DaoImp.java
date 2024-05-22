@@ -1,57 +1,58 @@
 package de.hitec.nhplus.datastorage;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DaoImp<T> implements Dao<T> {
-    protected Connection connection;
+	protected Connection connection;
+	public DaoImp(Connection connection) {
+		this.connection = connection;
+	}
+	@Override
+	public void create(T t) throws SQLException {
+		getCreateStatement(t).executeUpdate();
+	}
 
-    public DaoImp(Connection connection) {
-        this.connection = connection;
-    }
+	@Override
+	public T read(long key) throws SQLException {
+		T object = null;
+		ResultSet result = getReadByIDStatement(key).executeQuery();
+		if (result.next()) {
+			object = getInstanceFromResultSet(result);
+		}
+		return object;
+	}
 
-    @Override
-    public void create(T t) throws SQLException {
-        getCreateStatement(t).executeUpdate();
-    }
+	@Override
+	public List<T> readAll() throws SQLException {
+		return getListFromResultSet(getReadAllStatement().executeQuery());
+	}
 
-    @Override
-    public T read(long key) throws SQLException {
-        T object = null;
-        ResultSet result = getReadByIDStatement(key).executeQuery();
-        if (result.next()) {
-            object = getInstanceFromResultSet(result);
-        }
-        return object;
-    }
+	@Override
+	public void update(T t) throws SQLException {
+		getUpdateStatement(t).executeUpdate();
+	}
 
-    @Override
-    public List<T> readAll() throws SQLException {
-        return getListFromResultSet(getReadAllStatement().executeQuery());
-    }
+	@Override
+	public void deleteById(long key) throws SQLException {
+		getDeleteStatement(key).executeUpdate();
+	}
 
-    @Override
-    public void update(T t) throws SQLException {
-        getUpdateStatement(t).executeUpdate();
-    }
+	protected abstract T getInstanceFromResultSet(ResultSet set) throws SQLException;
 
-    @Override
-    public void deleteById(long key) throws SQLException {
-        getDeleteStatement(key).executeUpdate();
-    }
+	protected abstract ArrayList<T> getListFromResultSet(ResultSet set) throws SQLException;
 
-    protected abstract T getInstanceFromResultSet(ResultSet set) throws SQLException;
+	protected abstract PreparedStatement getCreateStatement(T t);
 
-    protected abstract ArrayList<T> getListFromResultSet(ResultSet set) throws SQLException;
+	protected abstract PreparedStatement getReadByIDStatement(long key);
 
-    protected abstract PreparedStatement getCreateStatement(T t);
+	protected abstract PreparedStatement getReadAllStatement();
 
-    protected abstract PreparedStatement getReadByIDStatement(long key);
+	protected abstract PreparedStatement getUpdateStatement(T t);
 
-    protected abstract PreparedStatement getReadAllStatement();
-
-    protected abstract PreparedStatement getUpdateStatement(T t);
-
-    protected abstract PreparedStatement getDeleteStatement(long key);
+	protected abstract PreparedStatement getDeleteStatement(long key);
 }
