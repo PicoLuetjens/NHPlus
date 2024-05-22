@@ -112,7 +112,11 @@ public class AllCaregiverController {
 		this.textFieldTelephone.textProperty().addListener(inputNewNurseListener);
 	}
 
-	public void autoDeleteByAge(){
+	/**
+	 * When <code>autoDeleteByAge()</code> gets called, it ensures that Caregivers whose newest assigned Treatment is
+	 * older than ten years will be deleted form the database, as well as the Treatment itself.
+	 */
+	private void autoDeleteByAge(){
 		try {
 			LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
 			TreatmentDao tdao = DaoFactory.getDaoFactory().createTreatmentDao();
@@ -120,7 +124,6 @@ public class AllCaregiverController {
 			List<Treatment> treatments = tdao.readAll();
 			List<Nurse> nurses = ndao.readAll();
 
-			// Lists to store treatments and nurses to be deleted
 			List<Treatment> treatmentsToDelete = new ArrayList<>();
 			List<Nurse> nursesToDelete = new ArrayList<>();
 
@@ -141,7 +144,6 @@ public class AllCaregiverController {
 				}
 			}
 
-			// Remove the collected treatments and nurses
 			for (Treatment treatment : treatmentsToDelete) {
 				treatments.remove(treatment);
 				tdao.deleteById(treatment.getTid());
@@ -158,7 +160,11 @@ public class AllCaregiverController {
 
 	}
 
-	public void removeByLockedStatus() {
+	/**
+	 * When <code>removeByLockedStatus()</code> it ensures that it removes locked Nurses from the view that is shown in the program.
+	 * However, this does not effect the database itself.
+	 */
+	private void removeByLockedStatus() {
 		Iterator<Nurse> iterator = this.nurses.iterator();
 		while (iterator.hasNext()) {
 			Nurse nurse = iterator.next();
@@ -344,12 +350,19 @@ public class AllCaregiverController {
 		this.textFieldTelephone.clear();
 	}
 
+	/**
+	 * Validates the correct input of a telephonenumber.
+	 * @param value The Telephonenumber in String format.
+	 */
 	private boolean isPhoneNumberValid(String value) {
 		String regex = "^[0-9+ \\-]+$";
 		Pattern pattern = Pattern.compile(regex);
 		return pattern.matcher(value).matches();
 	}
 
+	/**
+	 * Validates that every inputfield data is valid.
+	 */
 	private boolean areInputDataValid() {
 
 		return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() &&
